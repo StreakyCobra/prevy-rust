@@ -2,6 +2,7 @@
 name = "prevy"
 version = "0.1.0"
 dependencies = [
+ "ansi_term 0.7.2 (registry+https://github.com/rust-lang/crates.io-index)",
  "clap 2.2.5 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
