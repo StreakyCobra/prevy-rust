@@ -1,15 +1,50 @@
-![logo prevy](./resources/logo/prevy.png)
+![logo][]
 
 *__» Manage your development workspaces with ease.__*
 
-## Presentation
+<!-- markdown-toc start - Don't edit this section. Run M-x markdown-toc-generate-toc again -->
+**Table of Contents**
+
+- [Presentation](#presentation)
+- [Requirements](#requirements)
+- [How to build](#how-to-build)
+- [Version numbers](#version-numbers)
+- [License](#license)
+
+<!-- markdown-toc end -->
+
+# Presentation
 
 `prevy` helps you to manage your development workspaces by displaying status and
 acting on all the projects you are working on.
 
 > Author: Fabien Dubosson <fabien.dubosson@gmail.com>
 
-## Version numbers
+# Requirements
+
+- [rust][] (for compilation)
+- [cargo][] (for dependencies management)
+
+# How to build
+
+In order to build this project, you will need to install tooling for compiling
+[rust][] code. See the [requirements](#requirements) section for the complete
+list.
+
+The project can be build with:
+
+    $ cargo build
+
+This will generate a =target/debug/prevy= executable that can be run with the
+following command:
+
+    $ ./target/debug/prevy -h
+
+Alternatively, you can directly build and run the project with:
+
+    $ cargo run -q -- -h
+
+# Version numbers
 
 This software uses [Semantic Versioning v2.0.0][semver]. Version numbers are of
 the form:
@@ -25,7 +60,7 @@ Any part may also be incremented at any time if desired.
 **Note**: `MAJOR` version `0` is for initial development and does not follow the
 `MINOR` and `PATCH` schema. Also do not expect stability nor releases.
 
-## License
+# License
 
 This software is licensed under the term of the [GPL v3.0][] license:
 
@@ -47,6 +82,9 @@ This software is licensed under the term of the [GPL v3.0][] license:
 
 See [LICENSE.md][] for the complete license.
 
+[logo]:       ./resources/logo/prevy.png
+[rust]:       https://www.rust-lang.org/
+[cargo]:      https://crates.io/
 [semver]:     http://semver.org/spec/v2.0.0.html
 [LICENSE.md]: LICENSE.md
 [GPL v3.0]:   https://www.gnu.org/licenses/gpl-3.0.html
