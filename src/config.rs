@@ -1,8 +1,8 @@
 use clap::ArgMatches;
 
 pub struct Config<'a> {
-    pub workspace_file: &'a str,
     pub args: Option<ArgMatches<'a>>,
+    pub workspace_file: &'a str,
 }
 
 pub fn get_config<'a>() -> Config<'a> {
@@ -12,8 +12,8 @@ pub fn get_config<'a>() -> Config<'a> {
 impl<'a> Default for Config<'a> {
     fn default() -> Config<'a> {
         Config {
-            workspace_file: ".projects.gws",
             args: None,
+            workspace_file: ".projects.gws",
         }
     }
 }
