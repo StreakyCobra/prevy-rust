@@ -24,8 +24,7 @@ fn main() {
     let args = parse_arguments();
 
     // Get the configuration
-    let conf: &mut config::Config = &mut config::get_config();
-    conf.args = Some(args);
+    let conf: &mut config::Config = &mut config::get_config(args);
 
     // Change to project root
     check(workspace::cd_workspace_root(conf));

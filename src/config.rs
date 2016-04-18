@@ -1,18 +1,22 @@
 use clap::ArgMatches;
 
+/// A struct storing the program configuration
 pub struct Config<'a> {
-    pub args: Option<ArgMatches<'a>>,
+    /// The command line arguments passed to the program
+    pub args: ArgMatches<'a>,
+    /// The name of
     pub workspace_file: &'a str,
 }
 
-pub fn get_config<'a>() -> Config<'a> {
-    Config { ..Default::default() }
+/// Get the configuration from default values and users preferences.
+pub fn get_config<'a>(args: ArgMatches<'a>) -> Config<'a> {
+    Config { args: args, ..Default::default() }
 }
 
 impl<'a> Default for Config<'a> {
     fn default() -> Config<'a> {
         Config {
-            args: None,
+            args: ArgMatches::default(),
             workspace_file: ".projects.gws",
         }
     }
