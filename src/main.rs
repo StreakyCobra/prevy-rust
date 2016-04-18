@@ -19,6 +19,7 @@ fn parse_arguments<'a>() -> ArgMatches<'a> {
         .get_matches()
 }
 
+/// Run prevy.
 fn main() {
     // Parse the arguments
     let args = parse_arguments();
