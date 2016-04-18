@@ -21,7 +21,15 @@ pub struct Config<'a> {
 /// 5. Default software values
 pub fn get_config<'a>(args: ArgMatches<'a>) -> Config<'a> {
     // First get default software values
-    Config { args: args, ..Default::default() }
+    let mut conf: Config<'a> = Config { args: args, ..Default::default() };
+    // Parse the command line arguments
+    read_args(&mut conf);
+    // Return the final config
+    conf
+}
+
+fn read_args<'a>(conf: &'a mut Config) {
+    // TODO Not working when using `Config<'a>` instead of `Config` in function signature
 }
 
 impl<'a> Default for Config<'a> {
