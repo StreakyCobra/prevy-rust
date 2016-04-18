@@ -1,6 +1,7 @@
 extern crate ansi_term;
 extern crate clap;
 
+mod config;
 mod display;
 mod errors;
 mod workspace;
@@ -20,15 +21,24 @@ fn parse_arguments<'a>() -> ArgMatches<'a> {
 
 fn main() {
     // Parse the arguments
-    let _ = parse_arguments();
+    let args = parse_arguments();
+
+    // Get the configuration
+    let conf : &mut config::Config = &mut config::get_config();
+    conf.args = Some(args);
 
     // Change to project root
-    check(workspace::cd_workspace_root());
+    check(workspace::cd_workspace_root(conf));
 
     // Check that project root have been changed by printing it
     let cwd_path = env::current_dir().unwrap();
     let cwd: &str = cwd_path.to_str().unwrap();
     display::info(cwd);
+
+
+    display::warn(&conf.workspace_file);
+    conf.workspace_file = "changed";
+    display::warn(&conf.workspace_file);
 }
 
 /// Check if a function returned an error and handle it.
