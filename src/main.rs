@@ -6,7 +6,7 @@ mod display;
 mod errors;
 mod workspace;
 
-use clap::{ArgMatches, App};
+use clap::{App, Arg, ArgMatches};
 use std::env;
 use errors::Result;
 
@@ -16,6 +16,18 @@ fn parse_arguments<'a>() -> ArgMatches<'a> {
         .version("0.1.0")
         .author("Fabien Dubosson <fabien.dubosson@gmail.com>")
         .about("Manage your development workspaces with ease.")
+        .arg(Arg::with_name("configuration_file")
+                 .short("c")
+                 .long("config")
+                 .help("User configuration file")
+                 .value_name("FILE")
+                 .takes_value(true))
+        .arg(Arg::with_name("workspace_file")
+                 .short("f")
+                 .long("filename")
+                 .help("Workspace file name")
+                 .value_name("FILE")
+                 .takes_value(true))
         .get_matches()
 }
 
