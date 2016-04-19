@@ -19,17 +19,19 @@ pub struct Config<'a> {
 /// 3. Workspace file
 /// 4. User configuration file
 /// 5. Default software values
-pub fn get_config<'a>(args: ArgMatches<'a>) -> Config<'a> {
-    // First get default software values
-    let mut conf: Config<'a> = Config { args: args, ..Default::default() };
-    // Parse the command line arguments
-    read_args(&mut conf);
-    // Return the final config
-    conf
+pub fn get_config<'a>(conf: &mut Config<'a>) {
+    read_args(conf);
+    read_config_file(conf);
 }
 
-fn read_args<'a>(conf: &'a mut Config) {
-    // TODO Not working when using `Config<'a>` instead of `Config` in function signature
+fn read_args<'a>(conf: &mut Config<'a>) {
+    // TODO Test code
+    conf.workspace_file = ".projects.gws";
+}
+
+fn read_config_file<'a>(conf: &mut Config<'a>) {
+    // TODO Test code
+    conf.config_file = ".projects.gws";
 }
 
 impl<'a> Default for Config<'a> {

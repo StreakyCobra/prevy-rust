@@ -6,6 +6,7 @@ mod display;
 mod errors;
 mod workspace;
 
+use config::Config;
 use clap::{App, Arg, ArgMatches};
 use std::env;
 use errors::Result;
@@ -33,20 +34,22 @@ fn parse_arguments<'a>() -> ArgMatches<'a> {
 
 /// Run prevy.
 fn main() {
-    // Parse the arguments
+    // Parse command line arguments
     let args = parse_arguments();
 
-    // Get the configuration
-    let conf: &mut config::Config = &mut config::get_config(args);
+    // Create a default configuration
+    let conf = &mut Config { args: args, ..Default::default() };
+
+    // Update the configuration
+    config::get_config(conf);
 
     // Change to project root
-    check(workspace::cd_workspace_root(conf));
+    try(workspace::cd_workspace_root(conf));
 
     // Check that project root have been changed by printing it
     let cwd_path = env::current_dir().unwrap();
     let cwd: &str = cwd_path.to_str().unwrap();
     display::info(cwd);
-
 
     display::warn(&conf.workspace_file);
     conf.workspace_file = "changed";
@@ -54,7 +57,7 @@ fn main() {
 }
 
 /// Check if a function returned an error and handle it.
-fn check<A>(result: Result<A>) {
+fn try<A>(result: Result<A>) {
     match result {
         Ok(_) => (),
         Err(err) => err.exit(),
