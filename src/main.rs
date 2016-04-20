@@ -12,7 +12,7 @@ use clap::{App, Arg, ArgMatches};
 use std::env;
 use errors::Result;
 
-/// Parse command line arguments and return them.
+/// Parse command line arguments.
 fn parse_arguments<'a>() -> ArgMatches<'a> {
     App::new("prevy")
         .version("0.1.0")
