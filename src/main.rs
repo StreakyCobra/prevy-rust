@@ -38,11 +38,18 @@ fn main() {
     // Parse command line arguments
     let args = parse_arguments();
 
-    // Read the configuration
-    let mut conf = config::read_config(args);
+    // Bootstrap the configuration
+    // TODO
+
+    // Parse the configuration
+    let mut conf = config::parse_config(args);
+
+    // Get workspace information
+    // let workspace = workspace::get_workspace();
 
     // Move to project root
-    try(workspace::cd_workspace_root(&conf));
+    workspace::cd_workspace_root(&conf);
+
 
     // Check that project root have been changed by printing it
     let cwd_path = env::current_dir().unwrap();
@@ -52,12 +59,4 @@ fn main() {
     display::warn(&conf.workspace_file);
     conf.workspace_file = "changed".to_string();
     display::warn(&conf.workspace_file);
-}
-
-/// Check if a function returned an error and handle it.
-fn try<A>(result: Result<A>) {
-    match result {
-        Ok(_) => (),
-        Err(err) => err.exit(),
-    }
 }

@@ -11,6 +11,8 @@ pub enum ErrorKind {
     IO,
     /// Occurs when the program is run outside of a workspace.
     NotInWorkspace,
+    /// Occurs in case of parsing error.
+    Parser,
 }
 
 /// Handling errors

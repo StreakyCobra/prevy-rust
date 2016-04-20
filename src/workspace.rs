@@ -4,6 +4,11 @@ use std::env;
 use config::Config;
 use errors::{Error, ErrorKind, Result};
 
+pub struct Workspace {
+    pub root: String,
+    pub name: String,
+}
+
 /// Change directory to the workspace root.
 ///
 /// # Errors
