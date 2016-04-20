@@ -6,7 +6,6 @@ mod display;
 mod errors;
 mod workspace;
 
-use config::Config;
 use clap::{App, Arg, ArgMatches};
 use std::env;
 use errors::Result;
@@ -37,14 +36,11 @@ fn main() {
     // Parse command line arguments
     let args = parse_arguments();
 
-    // Create a default configuration
-    let conf = &mut Config { args: args, ..Default::default() };
+    // Read the configuration
+    let mut conf = config::read_config(args);
 
-    // Update the configuration
-    config::get_config(conf);
-
-    // Change to project root
-    try(workspace::cd_workspace_root(conf));
+    // Move to project root
+    try(workspace::cd_workspace_root(&conf));
 
     // Check that project root have been changed by printing it
     let cwd_path = env::current_dir().unwrap();
@@ -52,7 +48,7 @@ fn main() {
     display::info(cwd);
 
     display::warn(&conf.workspace_file);
-    conf.workspace_file = "changed";
+    conf.workspace_file = "changed".to_string();
     display::warn(&conf.workspace_file);
 }
 
