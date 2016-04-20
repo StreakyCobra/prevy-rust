@@ -4,5 +4,6 @@ version = "0.1.0"
 authors = ["Fabien Dubosson <fabien.dubosson@gmail.com>"]
 
 [dependencies]
-clap = "2"
 ansi_term = "0.7"
+clap = "2"
+yaml-rust = "*"

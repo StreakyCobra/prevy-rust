@@ -4,6 +4,7 @@ version = "0.1.0"
 dependencies = [
  "ansi_term 0.7.2 (registry+https://github.com/rust-lang/crates.io-index)",
  "clap 2.2.5 (registry+https://github.com/rust-lang/crates.io-index)",
+ "yaml-rust 0.3.2 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
@@ -47,5 +48,10 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 [[package]]
 name = "vec_map"
 version = "0.6.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+
+[[package]]
+name = "yaml-rust"
+version = "0.3.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 
