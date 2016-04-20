@@ -1,5 +1,7 @@
 extern crate ansi_term;
 extern crate clap;
+extern crate xdg_basedir;
+extern crate yaml_rust;
 
 mod config;
 mod display;
