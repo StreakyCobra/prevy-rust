@@ -7,3 +7,4 @@ authors = ["Fabien Dubosson <fabien.dubosson@gmail.com>"]
 ansi_term = "0.7"
 clap = "2"
 yaml-rust = "*"
+xdg-basedir = "1"
