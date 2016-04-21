@@ -12,7 +12,7 @@ pub enum ErrorKind {
     /// Occurs when the program is run outside of a workspace.
     NotInWorkspace,
     /// Occurs in case of parsing error.
-    Parser,
+    Parse,
 }
 
 /// Handling errors

@@ -38,7 +38,7 @@ fn main() {
     let args = parse_arguments();
 
     // Parse the configuration
-    let mut ctx = context::parse_context(args);
+    let mut ctx = context::build_context(args);
 
     // Move to project root
     workspace::cd_workspace_root(&ctx);

@@ -7,6 +7,7 @@ use xdg_basedir::get_config_home;
 use yaml_rust::{Yaml, YamlLoader};
 
 use errors::{Error, ErrorKind, Result};
+use workspace::Workspace;
 
 const DEFAULT_CONFIGURATION_FILE: &'static str = "prevy.yaml";
 const DEFAULT_WORKSPACE_FILENAME: &'static str = ".prevy.yaml";
@@ -16,6 +17,10 @@ const DEFAULT_WORKSPACE_FILENAME: &'static str = ".prevy.yaml";
 pub struct Context<'a> {
     /// The command line arguments.
     pub args: ArgMatches<'a>,
+    /// The program configuration.
+    pub config: Config,
+    /// The workspace information.
+    pub workspace: Workspace,
     /// The path to the configuration file.
     pub configuration_file: Option<String>,
     /// The content of the configuration file.
@@ -26,27 +31,18 @@ pub struct Context<'a> {
     pub workspace_file_content: Yaml,
 }
 
-/// Get the context from default values and users preferences.
-///
-/// The order of priority is the following:
-///
-/// 1. Environment variables
-/// 2. Command line parameters
-/// 3. Workspace file
-/// 4. User configuration file
-/// 5. Default configuration values
-pub fn parse_context(args: ArgMatches) -> Context {
-    // 5. Default context values
+#[derive(Clone, Debug)]
+pub struct Config {
+    // TODO
+}
+
+
+pub fn build_context(args: ArgMatches) -> Context {
+    // First bootstrap the context
     let mut ctx = bootstrap_context(args);
-    // 4. User configuration file
-    read_config_file(&mut ctx);
-    // 3. Workspace file
-    read_workspace_file(&mut ctx);
-    // 2. Command line parameters
-    read_args(&mut ctx);
-    // 1. Environment variables
-    read_env(&mut ctx);
-    // Return the parsed configuration
+    // Then parse the configurations
+    parse_config(&mut ctx);
+    // Return the built context
     ctx
 }
 
@@ -107,7 +103,7 @@ fn read_yaml_file(filename: String) -> Result<Yaml> {
     match YamlLoader::load_from_str(&content) {
         Err(error) => {
             Err(Error {
-                kind: ErrorKind::Parser,
+                kind: ErrorKind::Parse,
                 message: format!{"Error while parsing '{}'", filename}.to_string(),
                 error: Some(error.to_string()),
             })
@@ -116,26 +112,56 @@ fn read_yaml_file(filename: String) -> Result<Yaml> {
     }
 }
 
+/// Get the context from default values and users preferences.
+///
+/// The order of priority is the following:
+///
+/// 1. Environment variables
+/// 2. Command line parameters
+/// 3. Workspace file
+/// 4. User configuration file
+pub fn parse_config(ctx: &mut Context) {
+    // 4. User configuration file
+    read_config_file(ctx);
+    // 3. Workspace file
+    read_workspace_file(ctx);
+    // 2. Command line parameters
+    read_args(ctx);
+    // 1. Environment variables
+    read_env(ctx);
+}
+
 fn read_config_file(ctx: &mut Context) {
-    // TODO
+    // TODO implement
+    ctx.workspace_filename = "TEEEEEEE".to_string();
+    ctx.workspace_filename = "TEEEEEEE".to_string();
 }
 
 fn read_workspace_file(ctx: &mut Context) {
-    // TODO
+    // TODO implement
 }
 
 fn read_args(ctx: &mut Context) {
-    // TODO
+    // TODO implement
 }
 
 fn read_env(ctx: &mut Context) {
-    // TODO
+    // TODO implement
+}
+
+impl Default for Config {
+    fn default() -> Config {
+        // TODO implement
+        Config{}
+    }
 }
 
 impl<'a> Default for Context<'a> {
     fn default() -> Context<'a> {
         Context {
             args: ArgMatches::default(),
+            config: Config::default(),
+            workspace: Workspace::default(),
             configuration_file: match get_config_home() {
                 Err(_) => None,
                 Ok(val) => {

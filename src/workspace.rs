@@ -4,6 +4,19 @@ use std::env;
 use context::Context;
 use errors::{Error, ErrorKind, Result};
 
+#[derive(Clone, Debug)]
+pub struct Workspace {
+    // TODO implement
+}
+
+impl Default for Workspace {
+    fn default() -> Workspace {
+        // TODO implement
+        Workspace{}
+    }
+}
+
+
 /// Change directory to the workspace root.
 ///
 /// # Errors
