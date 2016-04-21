@@ -3,7 +3,7 @@ extern crate clap;
 extern crate xdg_basedir;
 extern crate yaml_rust;
 
-mod config;
+mod context;
 mod display;
 mod errors;
 mod workspace;
@@ -38,13 +38,10 @@ fn main() {
     let args = parse_arguments();
 
     // Parse the configuration
-    let mut conf = config::parse_config(args);
-
-    // Parse the workspace
-    // workspace::parse_workspace(&conf);
+    let mut ctx = context::parse_context(args);
 
     // Move to project root
-    workspace::cd_workspace_root(&conf);
+    workspace::cd_workspace_root(&ctx);
 
-    display::warn(&format!("{:?}", conf));
+    display::warn(&format!("{:?}", ctx));
 }

@@ -11,9 +11,9 @@ use errors::{Error, ErrorKind, Result};
 const DEFAULT_CONFIGURATION_FILE: &'static str = "prevy.yaml";
 const DEFAULT_WORKSPACE_FILENAME: &'static str = ".prevy.yaml";
 
-/// A struct storing the program configuration.
+/// A struct storing the program context.
 #[derive(Clone, Debug)]
-pub struct Config<'a> {
+pub struct Context<'a> {
     /// The command line arguments.
     pub args: ArgMatches<'a>,
     /// The path to the configuration file.
@@ -26,7 +26,7 @@ pub struct Config<'a> {
     pub workspace_file_content: Yaml,
 }
 
-/// Get the configuration from default values and users preferences.
+/// Get the context from default values and users preferences.
 ///
 /// The order of priority is the following:
 ///
@@ -35,57 +35,57 @@ pub struct Config<'a> {
 /// 3. Workspace file
 /// 4. User configuration file
 /// 5. Default configuration values
-pub fn parse_config(args: ArgMatches) -> Config {
-    // 5. Default configuration values
-    let mut conf = bootstrap_config(args);
+pub fn parse_context(args: ArgMatches) -> Context {
+    // 5. Default context values
+    let mut ctx = bootstrap_context(args);
     // 4. User configuration file
-    read_config_file(&mut conf);
+    read_config_file(&mut ctx);
     // 3. Workspace file
-    read_workspace_file(&mut conf);
+    read_workspace_file(&mut ctx);
     // 2. Command line parameters
-    read_args(&mut conf);
+    read_args(&mut ctx);
     // 1. Environment variables
-    read_env(&mut conf);
+    read_env(&mut ctx);
     // Return the parsed configuration
-    conf
+    ctx
 }
 
-fn bootstrap_config(args: ArgMatches) -> Config {
-    // First create a default configuration
-    let mut conf = Config { args: args, ..Default::default() };
+fn bootstrap_context(args: ArgMatches) -> Context {
+    // First create a default context
+    let mut ctx = Context { args: args, ..Default::default() };
     // Set the configuration file to use, can only be overidden by a command
     // line argument or an environment variable.
-    match conf.args.value_of("configuration_file") {
+    match ctx.args.value_of("configuration_file") {
         None => (),
-        Some(filepath) => conf.configuration_file = Some(filepath.to_string()),
+        Some(filepath) => ctx.configuration_file = Some(filepath.to_string()),
     }
     match env::var("PREVY_CONFIGURATION_FILE") {
         Err(_) => (),
-        Ok(filepath) => conf.configuration_file = Some(filepath.to_string()),
+        Ok(filepath) => ctx.configuration_file = Some(filepath.to_string()),
     }
     // Read the content of the configuration file
-    match conf.configuration_file.clone() {
+    match ctx.configuration_file.clone() {
         None => (),
         Some(filepath) => {
-            conf.configuration_file_content = read_yaml_file(filepath).unwrap_or(Yaml::Null)
+            ctx.configuration_file_content = read_yaml_file(filepath).unwrap_or(Yaml::Null)
         }
     }
     // Set the workspace filename to use, can only be overidden by the
     // configuration file, a command line argument or an environment variable.
-    match conf.configuration_file_content["workspace_filename"].as_str() {
+    match ctx.configuration_file_content["workspace_filename"].as_str() {
         None => (),
-        Some(filename) => conf.workspace_filename = filename.to_string(),
+        Some(filename) => ctx.workspace_filename = filename.to_string(),
     }
-    match conf.args.value_of("workspace_filename") {
+    match ctx.args.value_of("workspace_filename") {
         None => (),
-        Some(filename) => conf.workspace_filename = filename.to_string(),
+        Some(filename) => ctx.workspace_filename = filename.to_string(),
     }
     match env::var("PREVY_WORKSPACE_FILENAME") {
         Err(_) => (),
-        Ok(filename) => conf.workspace_filename = filename.to_string(),
+        Ok(filename) => ctx.workspace_filename = filename.to_string(),
     }
-    // Return the bootstrapped configuration that is ready to be parsed
-    conf
+    // Return the bootstrapped context that is ready to be parsed
+    ctx
 }
 
 fn read_yaml_file(filename: String) -> Result<Yaml> {
@@ -116,25 +116,25 @@ fn read_yaml_file(filename: String) -> Result<Yaml> {
     }
 }
 
-fn read_config_file(conf: &mut Config) {
+fn read_config_file(ctx: &mut Context) {
     // TODO
 }
 
-fn read_workspace_file(conf: &mut Config) {
+fn read_workspace_file(ctx: &mut Context) {
     // TODO
 }
 
-fn read_args(conf: &mut Config) {
+fn read_args(ctx: &mut Context) {
     // TODO
 }
 
-fn read_env(conf: &mut Config) {
+fn read_env(ctx: &mut Context) {
     // TODO
 }
 
-impl<'a> Default for Config<'a> {
-    fn default() -> Config<'a> {
-        Config {
+impl<'a> Default for Context<'a> {
+    fn default() -> Context<'a> {
+        Context {
             args: ArgMatches::default(),
             configuration_file: match get_config_home() {
                 Err(_) => None,

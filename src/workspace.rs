@@ -1,7 +1,7 @@
 use std::fs;
 use std::path;
 use std::env;
-use config::Config;
+use context::Context;
 use errors::{Error, ErrorKind, Result};
 
 /// Change directory to the workspace root.
@@ -10,8 +10,8 @@ use errors::{Error, ErrorKind, Result};
 ///
 /// If changing the directory to the workspace root fails, return an `Error` of
 /// kind `NotInWorkspace`.
-pub fn cd_workspace_root(conf: &Config) -> Result<()> {
-    let workspace_root = try!(find_workspace_root(conf));
+pub fn cd_workspace_root(ctx: &Context) -> Result<()> {
+    let workspace_root = try!(find_workspace_root(ctx));
     match env::set_current_dir(workspace_root) {
         Ok(_) => Ok(()),
         Err(error) => {
@@ -30,11 +30,11 @@ pub fn cd_workspace_root(conf: &Config) -> Result<()> {
 ///
 /// If the current dir is not inside a workspace, return an `Error` of kind
 /// `NotInWorkspace`.
-pub fn find_workspace_root(conf: &Config) -> Result<String> {
+pub fn find_workspace_root(ctx: &Context) -> Result<String> {
     // Get the current directory
     let mut current_dir = try!(current_dir());
     // If we are in a workspace return its path
-    while !is_workspace_root(conf, &current_dir) {
+    while !is_workspace_root(ctx, &current_dir) {
         let parent_dir = &String::from(current_dir);
         let parent_path = path::Path::new(parent_dir).parent();
         match parent_path {
@@ -94,14 +94,14 @@ fn pathbuf_to_str(path: &path::PathBuf) -> Result<String> {
 }
 
 /// Check if the given path is the root of a workspace.
-fn is_workspace_root(conf: &Config, path: &str) -> bool {
+fn is_workspace_root(ctx: &Context, path: &str) -> bool {
     let read_dir = fs::read_dir(path);
     match read_dir {
         Ok(entries) => {
             for entry in entries {
                 let filename = entry.unwrap().file_name();
                 let fnstring = filename.to_str().unwrap();
-                if fnstring == conf.workspace_filename {
+                if fnstring == ctx.workspace_filename {
                     return true;
                 }
             }
