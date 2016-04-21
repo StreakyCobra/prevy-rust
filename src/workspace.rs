@@ -4,11 +4,6 @@ use std::env;
 use config::Config;
 use errors::{Error, ErrorKind, Result};
 
-pub struct Workspace {
-    pub root: String,
-    pub name: String,
-}
-
 /// Change directory to the workspace root.
 ///
 /// # Errors
@@ -19,10 +14,11 @@ pub fn cd_workspace_root(conf: &Config) -> Result<()> {
     let workspace_root = try!(find_workspace_root(conf));
     match env::set_current_dir(workspace_root) {
         Ok(_) => Ok(()),
-        Err(_) => {
+        Err(error) => {
             Err(Error {
                 kind: ErrorKind::IO,
                 message: "Can not change directory to worspace root".to_string(),
+                error: Some(error.to_string()),
             })
         }
     }
@@ -47,6 +43,7 @@ pub fn find_workspace_root(conf: &Config) -> Result<String> {
                 return Err(Error {
                     kind: ErrorKind::NotInWorkspace,
                     message: "Not in a workspace".to_string(),
+                    error: None,
                 })
             }
         };
@@ -63,10 +60,11 @@ pub fn find_workspace_root(conf: &Config) -> Result<String> {
 fn current_dir() -> Result<String> {
     match env::current_dir() {
         Ok(pathbuf) => try!(Ok(pathbuf_to_str(&pathbuf))),
-        Err(_) => {
+        Err(error) => {
             Err(Error {
                 kind: ErrorKind::IO,
                 message: "Can not get the currend directory path".to_string(),
+                error: Some(error.to_string()),
             })
         }
     }
@@ -89,6 +87,7 @@ fn pathbuf_to_str(path: &path::PathBuf) -> Result<String> {
                 kind: ErrorKind::IO,
                 message: "One of the files in the hierarchy is not a valid UTF-8 string"
                              .to_string(),
+                error: None,
             })
         }
     }
@@ -102,7 +101,7 @@ fn is_workspace_root(conf: &Config, path: &str) -> bool {
             for entry in entries {
                 let filename = entry.unwrap().file_name();
                 let fnstring = filename.to_str().unwrap();
-                if fnstring == conf.workspace_file {
+                if fnstring == conf.workspace_filename {
                     return true;
                 }
             }

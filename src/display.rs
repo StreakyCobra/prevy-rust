@@ -12,6 +12,11 @@ fn stderr(text: &str) {
 }
 
 /// Print an error message.
+pub fn text(text: &str) {
+    stderr(text);
+}
+
+/// Print an error message.
 pub fn error(text: &str) {
     stderr(&Red.paint(text).to_string());
 }

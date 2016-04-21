@@ -21,12 +21,18 @@ pub struct Error {
     pub kind: ErrorKind,
     /// The error message.
     pub message: String,
+    /// An optional error content.
+    pub error: Option<String>,
 }
 
 impl Error {
     /// Exit the program by displaying an error message and returning 1.
     pub fn exit(&self) -> ! {
         display::error(&self.message);
+        match self.error.clone() {
+            None => (),
+            Some(error) => display::text(&error),
+        }
         process::exit(1);
     }
 }
