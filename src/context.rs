@@ -6,6 +6,7 @@ use clap::ArgMatches;
 use xdg_basedir::get_config_home;
 use yaml_rust::{Yaml, YamlLoader};
 
+use config::{Config, parse_config};
 use errors::{Error, ErrorKind, Result};
 use workspace::Workspace;
 
@@ -30,12 +31,6 @@ pub struct Context<'a> {
     /// The content of the workspace file.
     pub workspace_file_content: Yaml,
 }
-
-#[derive(Clone, Debug)]
-pub struct Config {
-    // TODO
-}
-
 
 pub fn build_context(args: ArgMatches) -> Context {
     // First bootstrap the context
@@ -109,50 +104,6 @@ fn read_yaml_file(filename: String) -> Result<Yaml> {
             })
         }
         Ok(yaml) => Ok(yaml[0].clone()),
-    }
-}
-
-/// Get the context from default values and users preferences.
-///
-/// The order of priority is the following:
-///
-/// 1. Environment variables
-/// 2. Command line parameters
-/// 3. Workspace file
-/// 4. User configuration file
-pub fn parse_config(ctx: &mut Context) {
-    // 4. User configuration file
-    read_config_file(ctx);
-    // 3. Workspace file
-    read_workspace_file(ctx);
-    // 2. Command line parameters
-    read_args(ctx);
-    // 1. Environment variables
-    read_env(ctx);
-}
-
-fn read_config_file(ctx: &mut Context) {
-    // TODO implement
-    ctx.workspace_filename = "TEEEEEEE".to_string();
-    ctx.workspace_filename = "TEEEEEEE".to_string();
-}
-
-fn read_workspace_file(ctx: &mut Context) {
-    // TODO implement
-}
-
-fn read_args(ctx: &mut Context) {
-    // TODO implement
-}
-
-fn read_env(ctx: &mut Context) {
-    // TODO implement
-}
-
-impl Default for Config {
-    fn default() -> Config {
-        // TODO implement
-        Config{}
     }
 }
 

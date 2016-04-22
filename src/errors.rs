@@ -31,7 +31,7 @@ impl Error {
         display::error(&self.message);
         match self.error.clone() {
             None => (),
-            Some(error) => display::text(&error),
+            Some(error) => display::error(&error),
         }
         process::exit(1);
     }

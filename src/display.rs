@@ -1,5 +1,5 @@
 use std::io::{self, Write};
-use ansi_term::Colour::{Red, Blue, Yellow};
+use ansi_term::Colour::{Red, Blue, Yellow, Purple};
 
 /// Print a given text to the standard output.
 fn stdout(text: &str) {
@@ -12,8 +12,13 @@ fn stderr(text: &str) {
 }
 
 /// Print an error message.
-pub fn text(text: &str) {
+pub fn print(text: &str) {
     stderr(text);
+}
+
+/// Print an error message.
+pub fn debug(text: &str) {
+    stderr(&Blue.paint(text).to_string());
 }
 
 /// Print an error message.
@@ -23,7 +28,7 @@ pub fn error(text: &str) {
 
 /// Print an info message.
 pub fn info(text: &str) {
-    stdout(&Blue.paint(text).to_string());
+    stdout(&Purple.paint(text).to_string());
 }
 
 /// Print an info message.

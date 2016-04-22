@@ -3,13 +3,13 @@ extern crate clap;
 extern crate xdg_basedir;
 extern crate yaml_rust;
 
+mod config;
 mod context;
 mod display;
 mod errors;
 mod workspace;
 
 use clap::{App, Arg, ArgMatches};
-use std::env;
 
 /// Parse command line arguments.
 fn parse_arguments<'a>() -> ArgMatches<'a> {
@@ -29,6 +29,9 @@ fn parse_arguments<'a>() -> ArgMatches<'a> {
                  .help("Workspace filename")
                  .value_name("FILE")
                  .takes_value(true))
+        .arg(Arg::with_name("debug")
+                 .short("d")
+                 .help("Enable debug output"))
         .get_matches()
 }
 
@@ -37,11 +40,9 @@ fn main() {
     // Parse command line arguments
     let args = parse_arguments();
 
-    // Parse the configuration
-    let mut ctx = context::build_context(args);
+    // Build the context
+    let ctx = context::build_context(args);
 
-    // Move to project root
-    workspace::cd_workspace_root(&ctx);
 
-    display::warn(&format!("{:?}", ctx));
+    display::debug(&format!("{:#?}", ctx));
 }
