@@ -8,8 +8,6 @@ use context::{Context};
 /// A structure storing the program configuration.
 #[derive(Clone, Debug)]
 pub struct Config {
-    /// Colored display.
-    pub colors: bool,
     /// Print debug information.
     pub debug: bool,
 }
@@ -19,7 +17,6 @@ impl Default for Config {
     fn default() -> Config {
         Config{
             debug: false,
-            colors: true,
         }
     }
 }
