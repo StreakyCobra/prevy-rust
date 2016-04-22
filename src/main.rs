@@ -7,6 +7,7 @@ mod config;
 mod context;
 mod display;
 mod errors;
+mod utils;
 mod workspace;
 
 use clap::{App, Arg, ArgMatches};

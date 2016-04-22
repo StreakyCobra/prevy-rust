@@ -1,6 +1,4 @@
 use std::env;
-use std::fs::File;
-use std::io::prelude::*;
 
 use clap::ArgMatches;
 use xdg_basedir::get_config_home;
@@ -9,6 +7,7 @@ use yaml_rust::{Yaml, YamlLoader};
 use config::{Config, parse_config};
 use errors::{Error, ErrorKind, Result};
 use workspace::Workspace;
+use utils::read_yaml_file;
 
 const DEFAULT_CONFIGURATION_FILE: &'static str = "prevy.yaml";
 const DEFAULT_WORKSPACE_FILENAME: &'static str = ".prevy.yaml";
@@ -32,6 +31,28 @@ pub struct Context<'a> {
     pub workspace_file_content: Yaml,
 }
 
+/// Implementing the default values for the context.
+impl<'a> Default for Context<'a> {
+    fn default() -> Context<'a> {
+        Context {
+            args: ArgMatches::default(),
+            config: Config::default(),
+            workspace: Workspace::default(),
+            configuration_file: match get_config_home() {
+                Err(_) => None,
+                Ok(val) => {
+                    match val.join(DEFAULT_CONFIGURATION_FILE).to_str() {
+                        None => None,
+                        Some(val) => Some(val.to_string()),
+                    }
+                }
+            },
+            configuration_file_content: Yaml::Null,
+            workspace_filename: DEFAULT_WORKSPACE_FILENAME.to_string(),
+            workspace_file_content: Yaml::Null,
+        }
+    }
+}
 pub fn build_context(args: ArgMatches) -> Context {
     // First bootstrap the context
     let mut ctx = bootstrap_context(args);
@@ -79,52 +100,3 @@ fn bootstrap_context(args: ArgMatches) -> Context {
     ctx
 }
 
-fn read_yaml_file(filename: String) -> Result<Yaml> {
-    let mut file = match File::open(filename.clone()) {
-        Ok(file) => file,
-        Err(error) => {
-            return Err(Error {
-                kind: ErrorKind::IO,
-                message: format!{"Error when trying to open '{}'.", filename}.to_string(),
-                error: Some(error.to_string()),
-            })
-        }
-    };
-
-    let mut content = String::new();
-
-    let _ = file.read_to_string(&mut content);
-
-    match YamlLoader::load_from_str(&content) {
-        Err(error) => {
-            Err(Error {
-                kind: ErrorKind::Parse,
-                message: format!{"Error while parsing '{}'", filename}.to_string(),
-                error: Some(error.to_string()),
-            })
-        }
-        Ok(yaml) => Ok(yaml[0].clone()),
-    }
-}
-
-impl<'a> Default for Context<'a> {
-    fn default() -> Context<'a> {
-        Context {
-            args: ArgMatches::default(),
-            config: Config::default(),
-            workspace: Workspace::default(),
-            configuration_file: match get_config_home() {
-                Err(_) => None,
-                Ok(val) => {
-                    match val.join(DEFAULT_CONFIGURATION_FILE).to_str() {
-                        None => None,
-                        Some(val) => Some(val.to_string()),
-                    }
-                }
-            },
-            configuration_file_content: Yaml::Null,
-            workspace_filename: DEFAULT_WORKSPACE_FILENAME.to_string(),
-            workspace_file_content: Yaml::Null,
-        }
-    }
-}

@@ -5,6 +5,13 @@ pub struct Config {
     // TODO
 }
 
+impl Default for Config {
+    fn default() -> Config {
+        // TODO implement
+        Config{}
+    }
+}
+
 /// Get the context from default values and users preferences.
 ///
 /// The order of priority is the following:
@@ -38,11 +45,4 @@ fn read_args(ctx: &mut Context) {
 
 fn read_env(ctx: &mut Context) {
     // TODO implement
-}
-
-impl Default for Config {
-    fn default() -> Config {
-        // TODO implement
-        Config{}
-    }
 }
