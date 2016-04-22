@@ -1,5 +1,11 @@
+// Standard libraries imports
+use std::env;
+
+// External crates imports
+use yaml_rust::{Yaml, YamlLoader};
+
 // Project imports
-use context::{Context};
+use context::Context;
 
 // ------------------------------------------------------------------------- //
 // Structure                                                                 //
@@ -15,9 +21,7 @@ pub struct Config {
 /// Define the default values for the config.
 impl Default for Config {
     fn default() -> Config {
-        Config{
-            debug: false,
-        }
+        Config { debug: false }
     }
 }
 
@@ -49,17 +53,32 @@ pub fn parse_config(ctx: &mut Context) {
 // ------------------------------------------------------------------------- //
 
 fn read_config_file(ctx: &mut Context) {
-    // TODO implement
+    let yaml = ctx.configuration_file_content.clone();
+    read_yaml_config(ctx, yaml);
 }
 
 fn read_workspace_file(ctx: &mut Context) {
-    // TODO implement
+    let yaml = ctx.workspace_file_content["config"].clone();
+    read_yaml_config(ctx, yaml);
 }
 
 fn read_args(ctx: &mut Context) {
-    ctx.config.debug = ctx.args.is_present("debug");
+    match ctx.args.is_present("debug") {
+        true => ctx.config.debug = true,
+        false => (),
+    }
 }
 
 fn read_env(ctx: &mut Context) {
-    // TODO implement
+    match env::var("PREVY_DEBUG") {
+        Err(_) => (),
+        Ok(_) => ctx.config.debug = true,
+    }
+}
+
+fn read_yaml_config(ctx: &mut Context, yaml: Yaml) {
+    match yaml["debug"].as_bool() {
+        None => (),
+        Some(val) => ctx.config.debug = val,
+    }
 }
