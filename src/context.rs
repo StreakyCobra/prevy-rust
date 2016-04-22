@@ -11,6 +11,10 @@ use utils::read_yaml_file;
 const DEFAULT_CONFIGURATION_FILE: &'static str = "prevy.yaml";
 const DEFAULT_WORKSPACE_FILENAME: &'static str = ".prevy.yaml";
 
+// ------------------------------------------------------------------------- //
+// Structure                                                                 //
+// ------------------------------------------------------------------------- //
+
 /// A struct storing the program context.
 #[derive(Clone, Debug)]
 pub struct Context<'a> {
@@ -52,6 +56,15 @@ impl<'a> Default for Context<'a> {
         }
     }
 }
+
+// ------------------------------------------------------------------------- //
+// Public API                                                                //
+// ------------------------------------------------------------------------- //
+
+/// Build the context of the application.
+///
+/// The context is built out of the command line arguments and the
+/// configurations files. The workspace is also extracted to the context.
 pub fn build_context(args: ArgMatches) -> Context {
     // First bootstrap the context
     let mut ctx = bootstrap_context(args);
@@ -61,6 +74,15 @@ pub fn build_context(args: ArgMatches) -> Context {
     ctx
 }
 
+// ------------------------------------------------------------------------- //
+// Internal functions                                                        //
+// ------------------------------------------------------------------------- //
+
+/// Bootstrap the context.
+///
+/// This parse the command line arguments, the environment variables and the
+/// configuration file in order to select the correct configuration and
+/// workspace files.
 fn bootstrap_context(args: ArgMatches) -> Context {
     // First create a default context
     let mut ctx = Context { args: args, ..Default::default() };
