@@ -1,15 +1,17 @@
+#![allow(dead_code)]
+
+// Standard libraries imports
 use std::io::{self, Write};
+
+// External crates imports
 use ansi_term::Colour::{Red, Blue, Yellow, Purple};
 
-/// Print a given text to the standard output.
-fn stdout(text: &str) {
-    writeln!(io::stdout(), "{}", text).expect("Error writing Error to stdout");
-}
+// Project imports
+use errors::{Error, ErrorKind};
 
-/// Print a given text to the standard error.
-fn stderr(text: &str) {
-    writeln!(io::stderr(), "{}", text).expect("Error writing Error to stderr");
-}
+// ------------------------------------------------------------------------- //
+// Public API                                                                //
+// ------------------------------------------------------------------------- //
 
 /// Print an error message.
 pub fn print(text: &str) {
@@ -34,4 +36,36 @@ pub fn info(text: &str) {
 /// Print an info message.
 pub fn warn(text: &str) {
     stdout(&Yellow.paint(text).to_string());
+}
+
+// ------------------------------------------------------------------------- //
+// Internal functions                                                        //
+// ------------------------------------------------------------------------- //
+
+/// Print a text to the standard output.
+fn stdout(text: &str) {
+    match writeln!(io::stdout(), "{}", text) {
+        Ok(_) => (),
+        Err(err) => {
+            Error {
+                kind: ErrorKind::IO,
+                message: "Error writing to standard output.".to_string(),
+                error: Some(err.to_string()),
+            }.exit()
+        }
+    }
+}
+
+/// Print a text to the standard error.
+fn stderr(text: &str) {
+    match writeln!(io::stderr(), "{}", text) {
+        Ok(_) => (),
+        Err(err) => {
+            Error {
+                kind: ErrorKind::IO,
+                message: "Error writing to standard error.".to_string(),
+                error: Some(err.to_string()),
+            }.exit()
+        }
+    }
 }

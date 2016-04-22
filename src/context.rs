@@ -1,13 +1,17 @@
+// Standard libraries imports
 use std::env;
 
+// External crates imports
 use clap::ArgMatches;
 use xdg_basedir::get_config_home;
 use yaml_rust::Yaml;
 
+// Project imports
 use config::{Config, parse_config};
 use workspace::Workspace;
 use utils::read_yaml_file;
 
+// TODO Move out of here
 const DEFAULT_CONFIGURATION_FILE: &'static str = "prevy.yaml";
 const DEFAULT_WORKSPACE_FILENAME: &'static str = ".prevy.yaml";
 
@@ -15,7 +19,7 @@ const DEFAULT_WORKSPACE_FILENAME: &'static str = ".prevy.yaml";
 // Structure                                                                 //
 // ------------------------------------------------------------------------- //
 
-/// A struct storing the program context.
+/// A structure storing the program context.
 #[derive(Clone, Debug)]
 pub struct Context<'a> {
     /// The command line arguments.
@@ -34,7 +38,7 @@ pub struct Context<'a> {
     pub workspace_file_content: Yaml,
 }
 
-/// Implementing the default values for the context.
+/// Define the default values for the context.
 impl<'a> Default for Context<'a> {
     fn default() -> Context<'a> {
         Context {

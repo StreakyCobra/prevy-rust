@@ -1,8 +1,11 @@
+// Standard libraries imports
 use std::fs::File;
 use std::io::prelude::*;
 
+// External crates imports
 use yaml_rust::{Yaml, YamlLoader};
 
+// Project imports
 use errors::{Error, ErrorKind, Result};
 
 ///

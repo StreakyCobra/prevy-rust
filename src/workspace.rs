@@ -1,8 +1,15 @@
+// Standard libraries imports
 use std::fs;
 use std::path;
 use std::env;
+
+// Project imports
 use context::Context;
 use errors::{Error, ErrorKind, Result};
+
+// ------------------------------------------------------------------------- //
+// Structure                                                                 //
+// ------------------------------------------------------------------------- //
 
 #[derive(Clone, Debug)]
 pub struct Workspace {
@@ -16,6 +23,9 @@ impl Default for Workspace {
     }
 }
 
+// ------------------------------------------------------------------------- //
+// Public API                                                                //
+// ------------------------------------------------------------------------- //
 
 /// Change directory to the workspace root.
 ///
@@ -63,6 +73,10 @@ pub fn find_workspace_root(ctx: &Context) -> Result<String> {
     }
     Ok(current_dir)
 }
+
+// ------------------------------------------------------------------------- //
+// Internal functions                                                        //
+// ------------------------------------------------------------------------- //
 
 /// Return the path to the current directory as a `String`.
 ///

@@ -1,8 +1,10 @@
+// External crates
 extern crate ansi_term;
 extern crate clap;
 extern crate xdg_basedir;
 extern crate yaml_rust;
 
+// Modules exported by the package
 mod config;
 mod context;
 mod display;
@@ -10,6 +12,7 @@ mod errors;
 mod utils;
 mod workspace;
 
+// Project imports
 use clap::{App, Arg, ArgMatches};
 
 /// Parse command line arguments.

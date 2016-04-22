@@ -1,16 +1,29 @@
+// Project imports
 use context::{Context};
 
+// ------------------------------------------------------------------------- //
+// Structure                                                                 //
+// ------------------------------------------------------------------------- //
+
+/// A structure storing the program configuration.
 #[derive(Clone, Debug)]
 pub struct Config {
-    // TODO
+    /// Colored display.
+    colors: bool,
 }
 
+/// Define the default values for the config.
 impl Default for Config {
     fn default() -> Config {
-        // TODO implement
-        Config{}
+        Config{
+            colors: true,
+        }
     }
 }
+
+// ------------------------------------------------------------------------- //
+// Public API                                                                //
+// ------------------------------------------------------------------------- //
 
 /// Get the context from default values and users preferences.
 ///
@@ -30,6 +43,10 @@ pub fn parse_config(ctx: &mut Context) {
     // 1. Environment variables
     read_env(ctx);
 }
+
+// ------------------------------------------------------------------------- //
+// Internal functions                                                        //
+// ------------------------------------------------------------------------- //
 
 fn read_config_file(ctx: &mut Context) {
     // TODO implement
