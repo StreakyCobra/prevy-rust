@@ -6,14 +6,18 @@ extern crate yaml_rust;
 
 // Project modules
 mod config;
+mod constants;
 mod context;
 mod display;
 mod errors;
 mod utils;
 mod workspace;
 
-// Project imports
+// External crates imports
 use clap::{App, Arg, ArgMatches};
+
+// Project imports
+use constants::*;
 
 /// Parse command line arguments.
 fn parse_arguments<'a>() -> ArgMatches<'a> {
@@ -21,13 +25,13 @@ fn parse_arguments<'a>() -> ArgMatches<'a> {
         .version("0.1.0")
         .author("Fabien Dubosson <fabien.dubosson@gmail.com>")
         .about("Manage your development workspaces with ease.")
-        .arg(Arg::with_name("configuration_file")
+        .arg(Arg::with_name(ID_CONFIGURATION_FILENAME)
                  .short("c")
                  .long("config")
                  .help("User configuration file")
                  .value_name("FILE")
                  .takes_value(true))
-        .arg(Arg::with_name("workspace_filename")
+        .arg(Arg::with_name(ID_WORKSPACE_FILENAME)
                  .short("f")
                  .long("filename")
                  .help("Workspace filename")

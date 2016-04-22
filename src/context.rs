@@ -11,13 +11,10 @@ use xdg_basedir::get_config_home;
 use yaml_rust::Yaml;
 
 // Project imports
+use constants::*;
 use config::{Config, parse_config};
 use workspace::Workspace;
 use utils::read_yaml_file;
-
-// TODO Move out of here
-const DEFAULT_CONFIGURATION_FILE: &'static str = "prevy.yaml";
-const DEFAULT_WORKSPACE_FILENAME: &'static str = ".prevy.yaml";
 
 // ------------------------------------------------------------------------- //
 // Structure                                                                 //
@@ -52,7 +49,7 @@ impl<'a> Default for Context<'a> {
             configuration_file: match get_config_home() {
                 Err(_) => None,
                 Ok(val) => {
-                    match val.join(DEFAULT_CONFIGURATION_FILE).to_str() {
+                    match val.join(DEFAULT_CONFIGURATION_FILENAME).to_str() {
                         None => None,
                         Some(val) => Some(val.to_string()),
                     }
@@ -96,11 +93,11 @@ fn bootstrap_context(args: ArgMatches) -> Context {
     let mut ctx = Context { args: args, ..Default::default() };
     // Set the configuration file to use, can only be overidden by a command
     // line argument or an environment variable.
-    match ctx.args.value_of("configuration_file") {
+    match ctx.args.value_of(ID_CONFIGURATION_FILENAME) {
         None => (),
         Some(filepath) => ctx.configuration_file = Some(filepath.to_string()),
     }
-    match env::var("PREVY_CONFIGURATION_FILE") {
+    match env::var(id_to_var(ID_CONFIGURATION_FILENAME)) {
         Err(_) => (),
         Ok(filepath) => ctx.configuration_file = Some(filepath.to_string()),
     }
@@ -113,15 +110,15 @@ fn bootstrap_context(args: ArgMatches) -> Context {
     }
     // Set the workspace filename to use, can only be overidden by the
     // configuration file, a command line argument or an environment variable.
-    match ctx.configuration_file_content["workspace_filename"].as_str() {
+    match ctx.configuration_file_content[ID_WORKSPACE_FILENAME].as_str() {
         None => (),
         Some(filename) => ctx.workspace_filename = filename.to_string(),
     }
-    match ctx.args.value_of("workspace_filename") {
+    match ctx.args.value_of(ID_WORKSPACE_FILENAME) {
         None => (),
         Some(filename) => ctx.workspace_filename = filename.to_string(),
     }
-    match env::var("PREVY_WORKSPACE_FILENAME") {
+    match env::var(id_to_var(ID_WORKSPACE_FILENAME)) {
         Err(_) => (),
         Ok(filename) => ctx.workspace_filename = filename.to_string(),
     }

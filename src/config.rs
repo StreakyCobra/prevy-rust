@@ -9,6 +9,7 @@ use std::env;
 use yaml_rust::Yaml;
 
 // Project imports
+use constants::*;
 use context::Context;
 
 // ------------------------------------------------------------------------- //
@@ -67,21 +68,21 @@ fn read_workspace_file(ctx: &mut Context) {
 }
 
 fn read_args(ctx: &mut Context) {
-    match ctx.args.is_present("debug") {
+    match ctx.args.is_present(ID_CONFIG_DEBUG) {
         true => ctx.config.debug = true,
         false => (),
     }
 }
 
 fn read_env(ctx: &mut Context) {
-    match env::var("PREVY_DEBUG") {
+    match env::var(id_to_var(ID_CONFIG_DEBUG)) {
         Err(_) => (),
         Ok(_) => ctx.config.debug = true,
     }
 }
 
 fn read_yaml_config(ctx: &mut Context, yaml: Yaml) {
-    match yaml["debug"].as_bool() {
+    match yaml[ID_CONFIG_DEBUG].as_bool() {
         None => (),
         Some(val) => ctx.config.debug = val,
     }
