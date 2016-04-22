@@ -9,13 +9,16 @@ use context::{Context};
 #[derive(Clone, Debug)]
 pub struct Config {
     /// Colored display.
-    colors: bool,
+    pub colors: bool,
+    /// Print debug information.
+    pub debug: bool,
 }
 
 /// Define the default values for the config.
 impl Default for Config {
     fn default() -> Config {
         Config{
+            debug: false,
             colors: true,
         }
     }
@@ -57,7 +60,7 @@ fn read_workspace_file(ctx: &mut Context) {
 }
 
 fn read_args(ctx: &mut Context) {
-    // TODO implement
+    ctx.config.debug = ctx.args.is_present("debug");
 }
 
 fn read_env(ctx: &mut Context) {

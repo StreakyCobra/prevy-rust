@@ -47,5 +47,8 @@ fn main() {
     // Build the context
     let ctx = context::build_context(args);
 
-    display::debug(&format!("{:#?}", ctx));
+    // Print the context if debug is enabled
+    if ctx.config.debug {
+        display::debug(&format!("{:#?}", ctx));
+    }
 }
