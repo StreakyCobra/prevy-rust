@@ -44,6 +44,5 @@ fn main() {
     // Build the context
     let ctx = context::build_context(args);
 
-
     display::debug(&format!("{:#?}", ctx));
 }

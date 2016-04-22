@@ -2,10 +2,9 @@ use std::env;
 
 use clap::ArgMatches;
 use xdg_basedir::get_config_home;
-use yaml_rust::{Yaml, YamlLoader};
+use yaml_rust::Yaml;
 
 use config::{Config, parse_config};
-use errors::{Error, ErrorKind, Result};
 use workspace::Workspace;
 use utils::read_yaml_file;
 
@@ -99,4 +98,3 @@ fn bootstrap_context(args: ArgMatches) -> Context {
     // Return the bootstrapped context that is ready to be parsed
     ctx
 }
-
