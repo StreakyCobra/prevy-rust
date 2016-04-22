@@ -25,6 +25,8 @@ use utils::read_yaml_file;
 pub struct Context<'a> {
     /// The command line arguments.
     pub args: ArgMatches<'a>,
+    /// The environment variables.
+    pub env_vars: Vec<(String, String)>,
     /// The program configuration.
     pub config: Config,
     /// The workspace information.
@@ -44,6 +46,7 @@ impl<'a> Default for Context<'a> {
     fn default() -> Context<'a> {
         Context {
             args: ArgMatches::default(),
+            env_vars: Default::default(),
             config: Config::default(),
             workspace: Workspace::default(),
             configuration_file: match get_config_home() {
@@ -91,6 +94,8 @@ pub fn build_context(args: ArgMatches) -> Context {
 fn bootstrap_context(args: ArgMatches) -> Context {
     // First create a default context
     let mut ctx = Context { args: args, ..Default::default() };
+    // Store environment variables
+    ctx.env_vars = env::vars().filter(is_prevy_var).collect();
     // Set the configuration file to use, can only be overidden by a command
     // line argument or an environment variable.
     match ctx.args.value_of(ID_CONFIGURATION_FILENAME) {
@@ -124,4 +129,8 @@ fn bootstrap_context(args: ArgMatches) -> Context {
     }
     // Return the bootstrapped context that is ready to be parsed
     ctx
+}
+
+fn is_prevy_var(val: &(String, String)) -> bool {
+    val.0.starts_with(VAR_PREFIX)
 }
