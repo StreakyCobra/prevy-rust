@@ -4,7 +4,7 @@ extern crate clap;
 extern crate xdg_basedir;
 extern crate yaml_rust;
 
-// Modules exported by the package
+// Project modules
 mod config;
 mod context;
 mod display;

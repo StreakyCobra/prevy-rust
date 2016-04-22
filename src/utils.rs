@@ -1,3 +1,7 @@
+// ------------------------------------------------------------------------- //
+// Imports                                                                   //
+// ------------------------------------------------------------------------- //
+
 // Standard libraries imports
 use std::fs::File;
 use std::io::prelude::*;
@@ -8,8 +12,13 @@ use yaml_rust::{Yaml, YamlLoader};
 // Project imports
 use errors::{Error, ErrorKind, Result};
 
-///
+// ------------------------------------------------------------------------- //
+// Public API                                                                //
+// ------------------------------------------------------------------------- //
+
+/// Read a YAML file and return its content.
 pub fn read_yaml_file(filename: String) -> Result<Yaml> {
+    // Try to open the file
     let mut file = match File::open(filename.clone()) {
         Ok(file) => file,
         Err(error) => {
@@ -21,10 +30,11 @@ pub fn read_yaml_file(filename: String) -> Result<Yaml> {
         }
     };
 
+    // Read the file content
     let mut content = String::new();
-
     let _ = file.read_to_string(&mut content);
 
+    // Parse the file content as YAML and return it
     match YamlLoader::load_from_str(&content) {
         Err(error) => {
             Err(Error {

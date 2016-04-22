@@ -1,14 +1,19 @@
-use display;
+// ------------------------------------------------------------------------- //
+// Imports                                                                   //
+// ------------------------------------------------------------------------- //
 
 // Standard libraries imports
 use std::process;
 use std::result::Result as StdResult;
 
-pub type Result<T> = StdResult<T, Error>;
+// Project imports
+use display;
 
 // ------------------------------------------------------------------------- //
 // Structure                                                                 //
 // ------------------------------------------------------------------------- //
+
+pub type Result<T> = StdResult<T, Error>;
 
 /// A structure
 pub struct Error {

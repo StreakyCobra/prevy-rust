@@ -1,8 +1,12 @@
+// ------------------------------------------------------------------------- //
+// Imports                                                                   //
+// ------------------------------------------------------------------------- //
+
 // Standard libraries imports
 use std::env;
 
 // External crates imports
-use yaml_rust::{Yaml, YamlLoader};
+use yaml_rust::Yaml;
 
 // Project imports
 use context::Context;
