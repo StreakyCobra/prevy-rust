@@ -21,13 +21,54 @@ use context::Context;
 pub struct Config {
     /// Print debug information.
     pub debug: bool,
+    /// Disable colored output.
+    pub nocolor: bool,
 }
 
 /// Define the default values for the config.
 impl Default for Config {
     fn default() -> Config {
-        Config { debug: false }
+        Config {
+            debug: false,
+            nocolor: false,
+        }
     }
+}
+
+// ------------------------------------------------------------------------- //
+// Macros                                                                    //
+// ------------------------------------------------------------------------- //
+
+macro_rules! eval_arg_bool {
+    ($ctx:expr, $elem:expr, $id:expr) => (
+        match $ctx.args.is_present($id) {
+            true => $elem = true,
+            false => (),
+        }
+    )
+}
+
+macro_rules! eval_env_bool {
+    ($ctx:expr, $elem:expr, $id:expr) => (
+        match $ctx.env_vars.get($id) {
+            None => (),
+            Some(val) => {
+                match bool::from_str(val) {
+                    Err(_) => (),
+                    Ok(val) => $elem = val,
+                }
+            }
+        }
+    )
+}
+
+macro_rules! eval_yaml_bool {
+    ($yaml:expr, $elem:expr, $id:expr) => (
+        match $yaml[$id].as_bool() {
+            None => (),
+            Some(val) => $elem = val,
+        }
+    )
 }
 
 // ------------------------------------------------------------------------- //
@@ -68,27 +109,16 @@ fn read_workspace_file(ctx: &mut Context) {
 }
 
 fn read_args(ctx: &mut Context) {
-    match ctx.args.is_present(ID_CONFIG_DEBUG) {
-        true => ctx.config.debug = true,
-        false => (),
-    }
+    eval_arg_bool!(ctx, ctx.config.debug, ID_CONFIG_DEBUG);
+    eval_arg_bool!(ctx, ctx.config.nocolor, ID_CONFIG_NOCOLOR);
 }
 
 fn read_env(ctx: &mut Context) {
-    match ctx.env_vars.get(ID_CONFIG_DEBUG) {
-        None => (),
-        Some(val) => {
-            match bool::from_str(val) {
-                Err(_) => (),
-                Ok(val) => ctx.config.debug = val,
-            }
-        }
-    }
+    eval_env_bool!(ctx, ctx.config.debug, ID_CONFIG_DEBUG);
+    eval_env_bool!(ctx, ctx.config.nocolor, ID_CONFIG_NOCOLOR);
 }
 
 fn read_yaml_config(ctx: &mut Context, yaml: Yaml) {
-    match yaml[ID_CONFIG_DEBUG].as_bool() {
-        None => (),
-        Some(val) => ctx.config.debug = val,
-    }
+    eval_yaml_bool!(yaml, ctx.config.debug, ID_CONFIG_DEBUG);
+    eval_yaml_bool!(yaml, ctx.config.nocolor, ID_CONFIG_NOCOLOR);
 }
