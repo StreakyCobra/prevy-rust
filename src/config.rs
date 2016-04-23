@@ -38,8 +38,8 @@ impl Default for Config {
 ///
 /// The order of priority is the following:
 ///
-/// 1. Environment variables
-/// 2. Command line parameters
+/// 1. Command line parameters
+/// 2. Environment variables
 /// 3. Workspace file
 /// 4. User configuration file
 pub fn parse_config(ctx: &mut Context) {
@@ -47,10 +47,10 @@ pub fn parse_config(ctx: &mut Context) {
     read_config_file(ctx);
     // 3. Workspace file
     read_workspace_file(ctx);
-    // 2. Command line parameters
-    read_args(ctx);
-    // 1. Environment variables
+    // 2. Environment variables
     read_env(ctx);
+    // 1. Command line parameters
+    read_args(ctx);
 }
 
 // ------------------------------------------------------------------------- //
