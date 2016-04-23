@@ -34,7 +34,7 @@ fn parse_arguments<'a>() -> ArgMatches<'a> {
                  .help("Name of the workspace file")
                  .value_name("FILENAME")
                  .takes_value(true))
-        .arg(Arg::with_name("debug")
+        .arg(Arg::with_name(ID_CONFIG_DEBUG)
                  .short("d")
                  .help("Enable debug output")
                  .hidden(true))
