@@ -63,7 +63,7 @@ the form:
 Any part may also be incremented at any time if desired.
 
 **Note**: `MAJOR` version `0` is for initial development and does not follow the
-`MINOR` and `PATCH` schema. Also do not expect stability nor releases.
+`MINOR` and `PATCH` schema. Do not expect any stability during this period.
 
 # License
 
