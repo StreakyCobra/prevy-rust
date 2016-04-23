@@ -9,7 +9,7 @@ use std::env;
 
 // Project imports
 use context::Context;
-use errors::{Error, ErrorKind, Result};
+use core::errors::{Error, ErrorKind, Result};
 
 // ------------------------------------------------------------------------- //
 // Structure                                                                 //

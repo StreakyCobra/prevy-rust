@@ -1,3 +1,6 @@
+mod config;
+mod workspace;
+
 // ------------------------------------------------------------------------- //
 // Imports                                                                   //
 // ------------------------------------------------------------------------- //
@@ -12,9 +15,9 @@ use xdg_basedir::get_config_home;
 use yaml_rust::Yaml;
 
 // Project imports
-use constants::*;
-use config::{Config, parse_config};
-use workspace::Workspace;
+use core::constants::*;
+use self::config::{Config, parse_config};
+use self::workspace::Workspace;
 use utils::read_yaml_file;
 
 // ------------------------------------------------------------------------- //

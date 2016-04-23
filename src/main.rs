@@ -5,19 +5,16 @@ extern crate xdg_basedir;
 extern crate yaml_rust;
 
 // Project modules
-mod config;
-mod constants;
 mod context;
+mod core;
 mod display;
-mod errors;
 mod utils;
-mod workspace;
 
 // External crates imports
 use clap::{App, Arg, ArgMatches};
 
 // Project imports
-use constants::*;
+use core::constants::*;
 
 /// Parse command line arguments.
 fn parse_arguments<'a>() -> ArgMatches<'a> {

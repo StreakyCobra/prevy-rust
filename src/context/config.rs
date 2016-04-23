@@ -9,7 +9,7 @@ use std::env;
 use yaml_rust::Yaml;
 
 // Project imports
-use constants::*;
+use core::constants::*;
 use context::Context;
 
 // ------------------------------------------------------------------------- //

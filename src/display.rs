@@ -11,7 +11,7 @@ use std::io::{self, Write};
 use ansi_term::Colour::{Red, Blue, Yellow, Purple};
 
 // Project imports
-use errors::{Error, ErrorKind};
+use core::errors::{Error, ErrorKind};
 
 // ------------------------------------------------------------------------- //
 // Public API                                                                //

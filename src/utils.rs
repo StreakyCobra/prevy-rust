@@ -10,7 +10,7 @@ use std::io::prelude::*;
 use yaml_rust::{Yaml, YamlLoader};
 
 // Project imports
-use errors::{Error, ErrorKind, Result};
+use core::errors::{Error, ErrorKind, Result};
 
 // ------------------------------------------------------------------------- //
 // Public API                                                                //
