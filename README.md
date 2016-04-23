@@ -23,7 +23,7 @@ _**» Manage your development workspaces with ease.**_
 `prevy` helps you to manage your development workspaces by displaying status and
 acting on all the projects you are working on.
 
-> Author: Fabien Dubosson <fabien.dubosson@gmail.com>
+> Author: Fabien Dubosson &lt;<fabien.dubosson@gmail.com>&gt;
 
 # Requirements
 
