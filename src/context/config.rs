@@ -4,6 +4,7 @@
 
 // Standard libraries imports
 use std::env;
+use std::str::FromStr;
 
 // External crates imports
 use yaml_rust::Yaml;
@@ -75,9 +76,12 @@ fn read_args(ctx: &mut Context) {
 }
 
 fn read_env(ctx: &mut Context) {
-    match env::var(id_to_var(ID_CONFIG_DEBUG)) {
-        Err(_) => (),
-        Ok(_) => ctx.config.debug = true,
+    match ctx.env_vars.get(ID_CONFIG_DEBUG) {
+        None => (),
+        Some(val) => match bool::from_str(val) {
+            Err(_) => (),
+            Ok(val) => ctx.config.debug = val,
+        },
     }
 }
 
