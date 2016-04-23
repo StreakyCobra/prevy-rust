@@ -1,3 +1,4 @@
+pub mod args;
 pub mod config;
 pub mod workspace;
 
@@ -17,6 +18,7 @@ use yaml_rust::Yaml;
 
 // Project imports
 use core::constants::*;
+use self::args::parse_arguments;
 use self::config::{Config, parse_config};
 use self::workspace::{Workspace, parse_workspace, find_workspace_root};
 use utils::read_yaml_file;
@@ -27,13 +29,13 @@ use utils::read_yaml_file;
 
 /// A structure storing the program context.
 #[derive(Clone, Debug)]
-pub struct Context<'a> {
+pub struct Context {
     /// The program configuration.
     pub config: Config,
     /// The workspace content.
     pub workspace: Workspace,
     /// The command line arguments.
-    args: ArgMatches<'a>,
+    args: ArgMatches<'static>,
     /// The environment variables.
     env_vars: HashMap<String, String>,
     /// The path to the configuration file.
@@ -49,8 +51,8 @@ pub struct Context<'a> {
 }
 
 /// Define the default values for the context.
-impl<'a> Default for Context<'a> {
-    fn default() -> Context<'a> {
+impl Default for Context {
+    fn default() -> Context {
         Context {
             config: Config::default(),
             workspace: Workspace::default(),
@@ -81,9 +83,9 @@ impl<'a> Default for Context<'a> {
 ///
 /// The context is built out of the command line arguments and the
 /// configurations files. The workspace is also extracted to the context.
-pub fn build_context(args: ArgMatches) -> Context {
+pub fn build_context() -> Context {
     // First bootstrap the context
-    let mut ctx = bootstrap_context(args);
+    let mut ctx = bootstrap_context();
     // Second parse the workspace
     parse_workspace(&mut ctx);
     // Third parse the different configurations
@@ -101,13 +103,13 @@ pub fn build_context(args: ArgMatches) -> Context {
 /// This parse the environment variables, the command line arguments and the
 /// configuration file in order to select the correct configuration and
 /// workspace files.
-fn bootstrap_context(args: ArgMatches) -> Context {
+fn bootstrap_context() -> Context {
     // First create a default context
-    let mut ctx = Context {
-        args: args,
-        env_vars: env::vars().filter_map(|s| parse_prevy_var(s)).collect(),
-        ..Default::default()
-    };
+    let mut ctx = Context { ..Default::default() };
+    // Parse command line arguments
+    ctx.args = parse_arguments();
+    // Get environment variables
+    ctx.env_vars = env::vars().filter_map(|s| parse_prevy_var(s)).collect();
     // Set the configuration file to use. Can only be overidden by a command
     // line argument or an environment variable.
     match ctx.env_vars.get(ID_CONFIGURATION_FILE) {
