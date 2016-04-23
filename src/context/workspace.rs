@@ -10,6 +10,7 @@ use std::env;
 // Project imports
 use context::Context;
 use core::errors::{Error, ErrorKind};
+use vcs::Repo;
 
 // ------------------------------------------------------------------------- //
 // Structures                                                                //
@@ -18,6 +19,7 @@ use core::errors::{Error, ErrorKind};
 #[derive(Clone, Debug)]
 pub struct Workspace {
     pub root: String,
+    pub repos: Vec<Repo>,
 }
 
 impl Workspace {
@@ -28,7 +30,10 @@ impl Workspace {
 
 impl Default for Workspace {
     fn default() -> Workspace {
-        Workspace { root: "".to_string() }
+        Workspace {
+            root: "".to_string(),
+            repos: Vec::default(),
+        }
     }
 }
 

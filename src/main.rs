@@ -9,6 +9,7 @@ extern crate yaml_rust;
 mod context;
 mod core;
 mod utils;
+mod vcs;
 
 /// Run prevy.
 fn main() {
