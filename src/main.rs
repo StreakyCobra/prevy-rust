@@ -25,7 +25,7 @@ fn parse_arguments<'a>() -> ArgMatches<'a> {
         .version("0.1.0")
         .author("Fabien Dubosson <fabien.dubosson@gmail.com>")
         .about("Manage your development workspaces with ease.")
-        .arg(Arg::with_name(ID_CONFIGURATION_FILENAME)
+        .arg(Arg::with_name(ID_CONFIGURATION_FILE)
                  .short("c")
                  .long("config")
                  .help("User configuration file")

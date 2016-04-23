@@ -8,7 +8,7 @@ pub const DEFAULT_WORKSPACE_FILENAME: &'static str = ".prevy.yaml";
 pub const VAR_PREFIX: &'static str = "PREVY_";
 
 /// Text identifier for the configuration filename.
-pub const ID_CONFIGURATION_FILENAME: &'static str = "configuration_filename";
+pub const ID_CONFIGURATION_FILE: &'static str = "configuration_file";
 
 /// Text identifier for the workspace filename.
 pub const ID_WORKSPACE_FILENAME: &'static str = "workspace_filename";

@@ -98,11 +98,12 @@ fn bootstrap_context(args: ArgMatches) -> Context {
     ctx.env_vars = env::vars().filter(is_prevy_var).collect();
     // Set the configuration file to use, can only be overidden by a command
     // line argument or an environment variable.
-    match ctx.args.value_of(ID_CONFIGURATION_FILENAME) {
+    match ctx.args.value_of(ID_CONFIGURATION_FILE) {
         None => (),
         Some(filepath) => ctx.configuration_file = Some(filepath.to_string()),
     }
-    match env::var(id_to_var(ID_CONFIGURATION_FILENAME)) {
+    println!("{}", id_to_var(ID_CONFIGURATION_FILE));
+    match env::var(id_to_var(ID_CONFIGURATION_FILE)) {
         Err(_) => (),
         Ok(filepath) => ctx.configuration_file = Some(filepath.to_string()),
     }
