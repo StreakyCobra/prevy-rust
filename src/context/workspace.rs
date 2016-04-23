@@ -48,7 +48,8 @@ pub fn cd_workspace_root(ctx: &Context) {
                 kind: ErrorKind::IO,
                 message: "Can not change directory to worspace root".to_string(),
                 error: Some(error.to_string()),
-            }.exit()
+            }
+            .exit()
         }
     };
 }
