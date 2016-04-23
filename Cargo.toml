@@ -5,6 +5,7 @@ authors = ["Fabien Dubosson <fabien.dubosson@gmail.com>"]
 
 [dependencies]
 ansi_term = "0.7"
+atty = "0.1"
 clap = "2"
-yaml-rust = "*"
 xdg-basedir = "1"
+yaml-rust = "*"
