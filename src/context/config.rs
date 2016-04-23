@@ -13,7 +13,7 @@ use core::constants::*;
 use context::Context;
 
 // ------------------------------------------------------------------------- //
-// Structure                                                                 //
+// Structures                                                                //
 // ------------------------------------------------------------------------- //
 
 /// A structure storing the program configuration.

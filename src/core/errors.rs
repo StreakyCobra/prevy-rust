@@ -10,7 +10,7 @@ use std::result::Result as StdResult;
 use core::display;
 
 // ------------------------------------------------------------------------- //
-// Structure                                                                 //
+// Structures                                                                //
 // ------------------------------------------------------------------------- //
 
 pub type Result<T> = StdResult<T, Error>;

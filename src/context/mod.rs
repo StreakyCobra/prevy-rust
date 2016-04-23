@@ -25,7 +25,7 @@ use self::workspace::{Workspace, parse_workspace, find_workspace_root};
 use utils::read_yaml_file;
 
 // ------------------------------------------------------------------------- //
-// Structure                                                                 //
+// Structures                                                                //
 // ------------------------------------------------------------------------- //
 
 /// A structure storing the program context.
