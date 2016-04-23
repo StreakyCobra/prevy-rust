@@ -7,7 +7,7 @@ use std::process;
 use std::result::Result as StdResult;
 
 // Project imports
-use display;
+use core::display;
 
 // ------------------------------------------------------------------------- //
 // Structure                                                                 //
