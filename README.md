@@ -40,7 +40,7 @@ The project can be build with:
 
     $ cargo build
 
-This will generate a =target/debug/prevy= executable that can be run with the
+This will generate a `target/debug/prevy` executable that can be run with the
 following command:
 
     $ ./target/debug/prevy -h
