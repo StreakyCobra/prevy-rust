@@ -1,9 +1,11 @@
 ![logo][]
 
-*__» Manage your development workspaces with ease.__*
+_**» Manage your development workspaces with ease.**_
 
 [![Built with Spacemacs](https://cdn.rawgit.com/syl20bnr/spacemacs/442d025779da2f62fc86c2082703697714db6514/assets/spacemacs-badge.svg)](http://spacemacs.org)
 [![Build Status](https://travis-ci.org/prevy/prevy.svg?branch=master)](https://travis-ci.org/prevy/prevy)
+[![License](https://img.shields.io/badge/license-GPLv3-blue.svg)][LICENSE.md]
+[![Join the chat at https://gitter.im/prevy/prevy](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/prevy/prevy?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 <!-- markdown-toc start - Don't edit this section. Run M-x markdown-toc-generate-toc again -->
 **Table of Contents**
