@@ -25,23 +25,6 @@ pub struct Error {
     pub error: Option<String>,
 }
 
-
-impl Error {
-    /// Exit the program by displaying an error message and returning 1.
-    pub fn exit(&self) -> ! {
-        display::error(&self.message);
-        match self.error.clone() {
-            None => (),
-            Some(error) => display::error(&error),
-        }
-        process::exit(1);
-    }
-}
-
-// ------------------------------------------------------------------------- //
-// Public API                                                                //
-// ------------------------------------------------------------------------- //
-
 /// The different kinds of errors.
 #[allow(dead_code)]
 pub enum ErrorKind {
@@ -53,3 +36,27 @@ pub enum ErrorKind {
     Parse,
 }
 
+impl Error {
+    /// Exit the program by displaying an error message and returning 1.
+    pub fn exit(&self) -> ! {
+        let mut msg = self.message.clone();
+        match self.error {
+            None => (),
+            Some(_) => msg.push(':'),
+        }
+        display::error(&msg);
+        match self.error.clone() {
+            None => (),
+            Some(error) => display::print(&indent(error)),
+        }
+        process::exit(1);
+    }
+}
+
+// ------------------------------------------------------------------------- //
+// Internal functions                                                        //
+// ------------------------------------------------------------------------- //
+
+fn indent(text: String) -> String {
+    "\t".to_string() + &text.replace("\n", "\t")
+}
