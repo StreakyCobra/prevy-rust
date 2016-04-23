@@ -11,7 +11,7 @@ mod display;
 mod utils;
 
 // External crates imports
-use clap::{App, Arg, ArgMatches};
+use clap::{App, Arg, ArgMatches, AppSettings};
 
 // Project imports
 use core::constants::*;
@@ -38,6 +38,7 @@ fn parse_arguments<'a>() -> ArgMatches<'a> {
                  .short("d")
                  .help("Enable debug output")
                  .hidden(true))
+        .setting(AppSettings::ColoredHelp)
         .get_matches()
 }
 
