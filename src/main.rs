@@ -8,7 +8,6 @@ extern crate yaml_rust;
 // Project modules
 mod context;
 mod core;
-mod display;
 mod utils;
 
 /// Run prevy.
@@ -18,7 +17,7 @@ fn main() {
 
     // Print the context if debug is enabled
     if ctx.config.debug {
-        display::debug(&format!("{:#?}", ctx));
+        core::display::debug(&format!("{:#?}", ctx));
     }
 
     // Starting from here, we will work from workspace root
