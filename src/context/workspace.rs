@@ -22,7 +22,7 @@ pub struct Workspace {
 
 impl Workspace {
     pub fn cd_root(self) {
-       cd_workspace_root(&self);
+        cd_workspace_root(&self);
     }
 }
 
