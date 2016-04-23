@@ -3,6 +3,7 @@
 // ------------------------------------------------------------------------- //
 
 // Standard libraries imports
+use std::collections::HashMap;
 use std::env;
 
 // External crates imports
@@ -26,7 +27,7 @@ pub struct Context<'a> {
     /// The command line arguments.
     pub args: ArgMatches<'a>,
     /// The environment variables.
-    pub env_vars: Vec<(String, String)>,
+    pub env_vars: HashMap<String, String>,
     /// The program configuration.
     pub config: Config,
     /// The workspace information.
@@ -88,24 +89,23 @@ pub fn build_context(args: ArgMatches) -> Context {
 
 /// Bootstrap the context.
 ///
-/// This parse the command line arguments, the environment variables and the
+/// This parse the environment variables, the command line arguments and the
 /// configuration file in order to select the correct configuration and
 /// workspace files.
 fn bootstrap_context(args: ArgMatches) -> Context {
     // First create a default context
     let mut ctx = Context { args: args, ..Default::default() };
     // Store environment variables
-    ctx.env_vars = env::vars().filter(is_prevy_var).collect();
+    ctx.env_vars = env::vars().filter_map(|s| is_prevy_var(s)).collect();
     // Set the configuration file to use, can only be overidden by a command
     // line argument or an environment variable.
-    match ctx.args.value_of(ID_CONFIGURATION_FILE) {
+    match ctx.env_vars.get(ID_CONFIGURATION_FILE) {
         None => (),
         Some(filepath) => ctx.configuration_file = Some(filepath.to_string()),
     }
-    println!("{}", id_to_var(ID_CONFIGURATION_FILE));
-    match env::var(id_to_var(ID_CONFIGURATION_FILE)) {
-        Err(_) => (),
-        Ok(filepath) => ctx.configuration_file = Some(filepath.to_string()),
+    match ctx.args.value_of(ID_CONFIGURATION_FILE) {
+        None => (),
+        Some(filepath) => ctx.configuration_file = Some(filepath.to_string()),
     }
     // Read the content of the configuration file
     match ctx.configuration_file.clone() {
@@ -120,18 +120,19 @@ fn bootstrap_context(args: ArgMatches) -> Context {
         None => (),
         Some(filename) => ctx.workspace_filename = filename.to_string(),
     }
-    match ctx.args.value_of(ID_WORKSPACE_FILENAME) {
+    match ctx.env_vars.get(ID_WORKSPACE_FILENAME) {
         None => (),
         Some(filename) => ctx.workspace_filename = filename.to_string(),
     }
-    match env::var(id_to_var(ID_WORKSPACE_FILENAME)) {
-        Err(_) => (),
-        Ok(filename) => ctx.workspace_filename = filename.to_string(),
+    match ctx.args.value_of(ID_WORKSPACE_FILENAME) {
+        None => (),
+        Some(filename) => ctx.workspace_filename = filename.to_string(),
     }
     // Return the bootstrapped context that is ready to be parsed
     ctx
 }
 
-fn is_prevy_var(val: &(String, String)) -> bool {
-    val.0.starts_with(VAR_PREFIX)
+fn is_prevy_var(val: (String, String)) -> Option<(String, String)> {
+    if val.0.starts_with(VAR_PREFIX) {Some((var_to_id(val.0), val.1))}
+    else {None}
 }
