@@ -96,7 +96,7 @@ fn bootstrap_context(args: ArgMatches) -> Context {
     // First create a default context
     let mut ctx = Context { args: args, ..Default::default() };
     // Store environment variables
-    ctx.env_vars = env::vars().filter_map(|s| is_prevy_var(s)).collect();
+    ctx.env_vars = env::vars().filter_map(|s| parse_prevy_var(s)).collect();
     // Set the configuration file to use, can only be overidden by a command
     // line argument or an environment variable.
     match ctx.env_vars.get(ID_CONFIGURATION_FILE) {
@@ -132,7 +132,8 @@ fn bootstrap_context(args: ArgMatches) -> Context {
     ctx
 }
 
-fn is_prevy_var(val: (String, String)) -> Option<(String, String)> {
+/// Parse an environment variables.
+fn parse_prevy_var(val: (String, String)) -> Option<(String, String)> {
     if val.0.starts_with(VAR_PREFIX) {Some((var_to_id(val.0), val.1))}
     else {None}
 }
