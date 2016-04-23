@@ -16,10 +16,6 @@ pub const ID_WORKSPACE_FILENAME: &'static str = "workspace_filename";
 /// Text identifier for the debuger configuration.
 pub const ID_CONFIG_DEBUG: &'static str = "debug";
 
-pub fn id_to_var(id: &str) -> String {
-    VAR_PREFIX.to_string() + &id.to_uppercase()
-}
-
 pub fn var_to_id(var: String) -> String {
     var.trim_left_matches(VAR_PREFIX).to_lowercase().to_string()
 }
