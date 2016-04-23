@@ -3,7 +3,6 @@
 // ------------------------------------------------------------------------- //
 
 // Standard libraries imports
-use std::env;
 use std::str::FromStr;
 
 // External crates imports
