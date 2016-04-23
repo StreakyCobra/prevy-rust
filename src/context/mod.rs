@@ -137,6 +137,9 @@ fn bootstrap_context(args: ArgMatches) -> Context {
 
 /// Parse an environment variables.
 fn parse_prevy_var(val: (String, String)) -> Option<(String, String)> {
-    if val.0.starts_with(VAR_PREFIX) {Some((var_to_id(val.0), val.1))}
-    else {None}
+    if val.0.starts_with(VAR_PREFIX) {
+        Some((var_to_id(val.0), val.1))
+    } else {
+        None
+    }
 }

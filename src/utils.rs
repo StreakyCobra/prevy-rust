@@ -48,7 +48,8 @@ pub fn read_yaml_file(filename: String) -> Result<Yaml> {
                 kind: ErrorKind::Parse,
                 message: format!{"Error while parsing '{}'", filename}.to_string(),
                 error: Some(error.to_string()),
-            }.exit();
+            }
+            .exit();
         }
         Ok(yaml) => Ok(yaml[0].clone()),
     }

@@ -55,7 +55,8 @@ fn stdout(text: &str) {
                 kind: ErrorKind::IO,
                 message: "Error writing to standard output.".to_string(),
                 error: Some(err.to_string()),
-            }.exit()
+            }
+            .exit()
         }
     }
 }
@@ -69,7 +70,8 @@ fn stderr(text: &str) {
                 kind: ErrorKind::IO,
                 message: "Error writing to standard error.".to_string(),
                 error: Some(err.to_string()),
-            }.exit()
+            }
+            .exit()
         }
     }
 }

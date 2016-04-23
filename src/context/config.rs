@@ -78,10 +78,12 @@ fn read_args(ctx: &mut Context) {
 fn read_env(ctx: &mut Context) {
     match ctx.env_vars.get(ID_CONFIG_DEBUG) {
         None => (),
-        Some(val) => match bool::from_str(val) {
-            Err(_) => (),
-            Ok(val) => ctx.config.debug = val,
-        },
+        Some(val) => {
+            match bool::from_str(val) {
+                Err(_) => (),
+                Ok(val) => ctx.config.debug = val,
+            }
+        }
     }
 }
 
