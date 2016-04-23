@@ -51,6 +51,12 @@ pub fn read_yaml_file(filename: String) -> Result<Yaml> {
             }
             .exit();
         }
-        Ok(yaml) => Ok(yaml[0].clone()),
+        Ok(yaml) => {
+            if yaml.len() > 0 {
+                Ok(yaml[0].clone())
+            } else {
+                Ok(Yaml::Null)
+            }
+        }
     }
 }
