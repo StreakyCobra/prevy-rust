@@ -53,4 +53,7 @@ fn main() {
     if ctx.config.debug {
         display::debug(&format!("{:#?}", ctx));
     }
+
+    // Starting from here, we will work from workspace root
+    context::workspace::cd_workspace_root(&ctx);
 }
