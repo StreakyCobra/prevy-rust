@@ -12,13 +12,8 @@ mod utils;
 
 /// Run prevy.
 fn main() {
-    // Build the context
+    // Build the context (arguments, environment variables, config, workspace)
     let ctx = context::build_context();
-
-    // Print the context if debug is enabled
-    if ctx.config.debug {
-        core::display::debug(&format!("{:#?}", ctx));
-    }
 
     // Starting from here, we will work from workspace root
     ctx.workspace.cd_root();

@@ -18,6 +18,7 @@ use yaml_rust::Yaml;
 
 // Project imports
 use core::constants::*;
+use core::display;
 use self::args::parse_arguments;
 use self::config::{Config, parse_config};
 use self::workspace::{Workspace, parse_workspace, find_workspace_root};
@@ -90,6 +91,10 @@ pub fn build_context() -> Context {
     parse_workspace(&mut ctx);
     // Third parse the different configurations
     parse_config(&mut ctx);
+    // Print the resulting context if debug is enabled
+    if ctx.config.debug {
+        display::debug(&format!("{:#?}", ctx));
+    }
     // Return the built context
     ctx
 }
