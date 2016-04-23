@@ -1,6 +1,6 @@
-pub mod args;
-pub mod config;
-pub mod workspace;
+mod args;
+mod config;
+mod workspace;
 
 // ------------------------------------------------------------------------- //
 // Imports                                                                   //

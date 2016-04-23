@@ -20,6 +20,12 @@ pub struct Workspace {
     pub root: String,
 }
 
+impl Workspace {
+    pub fn cd_root(self) {
+       cd_workspace_root(&self);
+    }
+}
+
 impl Default for Workspace {
     fn default() -> Workspace {
         Workspace { root: "".to_string() }
@@ -40,8 +46,8 @@ pub fn parse_workspace(ctx: &mut Context) {
 ///
 /// If changing the directory to the workspace root fails, return an `Error` of
 /// kind `IO`.
-pub fn cd_workspace_root(ctx: &Context) {
-    match env::set_current_dir(ctx.workspace.root.clone()) {
+pub fn cd_workspace_root(ws: &Workspace) {
+    match env::set_current_dir(ws.root.clone()) {
         Ok(_) => (),
         Err(error) => {
             Error {

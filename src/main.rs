@@ -22,5 +22,5 @@ fn main() {
     }
 
     // Starting from here, we will work from workspace root
-    context::workspace::cd_workspace_root(&ctx);
+    ctx.workspace.cd_root();
 }
