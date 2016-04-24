@@ -19,6 +19,7 @@ use yaml_rust::Yaml;
 
 // Project imports
 use core::constants::*;
+use core::errors::Fallible;
 use core::utils::read_yaml_file;
 use self::args::parse_arguments;
 use self::config::{Config, parse_config};
@@ -153,16 +154,13 @@ fn bootstrap_context() -> Context {
         Some(filename) => ctx.workspace_filename = filename.to_string(),
     }
     // Read the content of the workspace file and store it for performance
-    ctx.workspace.root = find_workspace_root(ctx.workspace_filename.clone());
+    ctx.workspace.root = find_workspace_root(ctx.workspace_filename.clone()).unwrap_or_fail();
     ctx.workspace_file = PathBuf::from(ctx.workspace.root.clone())
                              .join(ctx.workspace_filename.clone())
                              .to_str()
                              .unwrap()
                              .to_string();
-    match read_yaml_file(ctx.workspace_file.clone()) {
-        Ok(content) => ctx.workspace_file_content = content,
-        Err(error) => error.exit(),
-    }
+    ctx.workspace_file_content = read_yaml_file(ctx.workspace_file.clone()).unwrap_or_fail();
     // Return the bootstrapped context that is ready to be parsed
     ctx
 }

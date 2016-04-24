@@ -4,15 +4,12 @@
 // Imports                                                                   //
 // ------------------------------------------------------------------------- //
 
-// Standard libraries imports
-use std::io::{self, Write};
-use std::process;
-
 // External crates imports
 use ansi_term::Colour::{Red, Blue, Yellow, Purple};
 
 // Project imports
 use context::Context;
+use core::utils::{stderr, stdout};
 
 // ------------------------------------------------------------------------- //
 // Structure                                                                 //
@@ -62,26 +59,4 @@ impl Default for Display {
 
 pub fn prepare_display(ctx: &mut Context) {
     ctx.display = Display { nocolor: ctx.config.nocolor }
-}
-
-// ------------------------------------------------------------------------- //
-// Internal functions                                                        //
-// ------------------------------------------------------------------------- //
-
-/// Print a text to the standard output.
-fn stdout(text: &str) {
-    match writeln!(io::stdout(), "{}", text) {
-        Ok(_) => (),
-        // If it goes wrong, exit with a special code as we can't write anything.
-        Err(_) => process::exit(1),
-    }
-}
-
-/// Print a text to the standard error.
-fn stderr(text: &str) {
-    match writeln!(io::stderr(), "{}", text) {
-        Ok(_) => (),
-        // If it goes wrong, exit with a special code as we can't write anything.
-        Err(_) => process::exit(1),
-    }
 }

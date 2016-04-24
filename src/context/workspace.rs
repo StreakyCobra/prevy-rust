@@ -9,7 +9,7 @@ use std::env;
 
 // Project imports
 use context::Context;
-use core::errors::{Error, ErrorKind, Exitable};
+use core::errors::{Error, ErrorKind, Fallible, Result};
 use vcs::Repo;
 
 // ------------------------------------------------------------------------- //
@@ -46,7 +46,7 @@ pub fn parse_workspace(ctx: &mut Context) {
         None => (),
         Some(hashmap) => {
             for repo in hashmap {
-                ctx.workspace.repos.push(Repo::from_hash(repo).handle_error())
+                ctx.workspace.repos.push(Repo::from_hash(repo).unwrap_or_fail())
             }
         }
     }
@@ -78,9 +78,9 @@ pub fn cd_workspace_root(ws: &Workspace) {
 ///
 /// If the current dir is not inside a workspace, return an `Error` of kind
 /// `NotInWorkspace`.
-pub fn find_workspace_root(filename: String) -> String {
+pub fn find_workspace_root(filename: String) -> Result<String> {
     // Get the current directory
-    let mut current_dir = current_dir();
+    let mut current_dir = current_dir().unwrap_or_fail();
     // If we are in a workspace return its path
     while !is_workspace_root(&current_dir, filename.clone()) {
         let parent_dir = current_dir;
@@ -88,16 +88,15 @@ pub fn find_workspace_root(filename: String) -> String {
         match parent_path {
             Some(path) => current_dir = path.to_str().unwrap().to_string(),
             None => {
-                Error {
+                return Err(Error {
                     kind: ErrorKind::NotInWorkspace,
                     message: "Not in a workspace".to_string(),
                     error: None,
-                }
-                .exit()
+                })
             }
         };
     }
-    current_dir
+    Ok(current_dir)
 }
 
 // ------------------------------------------------------------------------- //
@@ -110,16 +109,15 @@ pub fn find_workspace_root(filename: String) -> String {
 ///
 /// If the current directory can not be retrived, return an `Error` of kind
 /// `IO`.
-fn current_dir() -> String {
+fn current_dir() -> Result<String> {
     match env::current_dir() {
-        Ok(pathbuf) => pathbuf.to_str().unwrap().to_string(),
+        Ok(pathbuf) => Ok(pathbuf.to_str().unwrap().to_string()),
         Err(error) => {
-            Error {
+            Err(Error {
                 kind: ErrorKind::IO,
                 message: "Can not get the currend directory path".to_string(),
                 error: Some(error.to_string()),
-            }
-            .exit()
+            })
         }
     }
 }

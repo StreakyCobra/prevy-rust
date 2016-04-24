@@ -1,3 +1,7 @@
+//! This modules handle errors in prevy.
+//!
+//! The display of errorr doesn't use
+
 // ------------------------------------------------------------------------- //
 // Imports                                                                   //
 // ------------------------------------------------------------------------- //
@@ -6,11 +10,21 @@
 use std::process;
 use std::result::Result as StdResult;
 
+// External crates imports
+use ansi_term::Colour::Red;
+
+// Project imports
+use core::utils::stderr;
+
 // ------------------------------------------------------------------------- //
-// Structures                                                                //
+// Types                                                                     //
 // ------------------------------------------------------------------------- //
 
 pub type Result<T> = StdResult<T, Error>;
+
+// ------------------------------------------------------------------------- //
+// Structures                                                                //
+// ------------------------------------------------------------------------- //
 
 /// The different kinds of errors.
 #[allow(dead_code)]
@@ -22,7 +36,6 @@ pub enum ErrorKind {
     /// Occurs in case of parsing error.
     Parse,
 }
-
 
 /// A structure
 pub struct Error {
@@ -42,21 +55,28 @@ impl Error {
             None => (),
             Some(_) => msg.push(':'),
         }
-        print(&msg);
+        stderr(&Red.paint(msg).to_string());
         match self.error.clone() {
             None => (),
-            Some(error) => print(&indent(error)),
+            Some(error) => stderr(&indent(error)),
         }
         process::exit(1);
     }
 }
 
-pub trait Exitable<T> {
-    fn handle_error(self) -> T;
+// ------------------------------------------------------------------------- //
+// Traits                                                                    //
+// ------------------------------------------------------------------------- //
+
+/// A fallible unwrap
+pub trait Fallible<T> {
+    /// Return the value from Ok Result, or fail in case of Error.
+    fn unwrap_or_fail(self) -> T;
 }
 
-impl<T> Exitable<T> for Result<T> {
-    fn handle_error(self) -> T {
+/// Implements Fallible for Result
+impl<T> Fallible<T> for Result<T> {
+    fn unwrap_or_fail(self) -> T {
         match self {
             Ok(val) => val,
             Err(err) => err.exit(),
@@ -68,10 +88,10 @@ impl<T> Exitable<T> for Result<T> {
 // Internal functions                                                        //
 // ------------------------------------------------------------------------- //
 
-fn print(text: &str) {
-    println!("{}", text);
-}
-
+/// Indent a text with a tabulation.
+///
+/// Takes care of indenting all lines, not only the first one.
 fn indent(text: String) -> String {
-    "\t".to_string() + &text.replace("\n", "\t")
+    let prefix = Red.paint(" │ ").to_string();
+    prefix.clone() + &text.replace("\n", &("\n".to_string() + &prefix))
 }
