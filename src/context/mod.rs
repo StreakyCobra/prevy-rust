@@ -1,6 +1,5 @@
 mod args;
 mod config;
-mod display;
 mod workspace;
 
 // ------------------------------------------------------------------------- //
@@ -19,11 +18,11 @@ use yaml_rust::Yaml;
 
 // Project imports
 use core::constants::*;
+use core::display::{Display, create_display};
 use core::errors::Fallible;
 use core::utils::read_yaml_file;
 use self::args::parse_arguments;
 use self::config::{Config, parse_config};
-use self::display::{Display, prepare_display};
 use self::workspace::{Workspace, parse_workspace, find_workspace_root};
 
 // ------------------------------------------------------------------------- //
@@ -96,8 +95,8 @@ pub fn build_context() -> Context {
     parse_workspace(&mut ctx);
     // Third parse the different configurations
     parse_config(&mut ctx);
-    // Prepare the display
-    prepare_display(&mut ctx);
+    // Create a display
+    create_display(&mut ctx);
     // Print the resulting context if debug is enabled
     if ctx.config.debug {
         ctx.display.clone().debug(&format!("{:#?}", ctx));

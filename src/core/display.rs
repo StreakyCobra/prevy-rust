@@ -57,6 +57,14 @@ impl Default for Display {
 // Public API                                                                //
 // ------------------------------------------------------------------------- //
 
-pub fn prepare_display(ctx: &mut Context) {
+pub fn create_display(ctx: &mut Context) {
     ctx.display = Display { nocolor: ctx.config.nocolor }
+}
+
+/// Indent a text with a tabulation.
+///
+/// Takes care of indenting all lines, not only the first one.
+pub fn indent(text: String) -> String {
+    let prefix = Red.paint(" │ ").to_string();
+    prefix.clone() + &text.replace("\n", &("\n".to_string() + &prefix))
 }

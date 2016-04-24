@@ -50,6 +50,12 @@ pub struct Error {
 impl Error {
     /// Exit the program by displaying an error message and returning 1.
     pub fn exit(&self) -> ! {
+        self.print();
+        process::exit(1);
+    }
+
+    /// Exit the program by displaying an error message and returning 1.
+    pub fn print(&self) {
         let mut msg = self.message.clone();
         match self.error {
             None => (),
@@ -58,9 +64,8 @@ impl Error {
         stderr(&Red.paint(msg).to_string());
         match self.error.clone() {
             None => (),
-            Some(error) => stderr(&indent(error)),
+            Some(error) => stderr(&error),
         }
-        process::exit(1);
     }
 }
 
@@ -82,16 +87,4 @@ impl<T> Fallible<T> for Result<T> {
             Err(err) => err.exit(),
         }
     }
-}
-
-// ------------------------------------------------------------------------- //
-// Internal functions                                                        //
-// ------------------------------------------------------------------------- //
-
-/// Indent a text with a tabulation.
-///
-/// Takes care of indenting all lines, not only the first one.
-fn indent(text: String) -> String {
-    let prefix = Red.paint(" │ ").to_string();
-    prefix.clone() + &text.replace("\n", &("\n".to_string() + &prefix))
 }
