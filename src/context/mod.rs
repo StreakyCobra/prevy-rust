@@ -19,10 +19,10 @@ use yaml_rust::Yaml;
 // Project imports
 use core::constants::*;
 use core::display;
+use core::utils::read_yaml_file;
 use self::args::parse_arguments;
 use self::config::{Config, parse_config};
 use self::workspace::{Workspace, parse_workspace, find_workspace_root};
-use utils::read_yaml_file;
 
 // ------------------------------------------------------------------------- //
 // Structures                                                                //
