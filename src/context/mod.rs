@@ -1,5 +1,6 @@
 mod args;
 mod config;
+mod display;
 mod workspace;
 
 // ------------------------------------------------------------------------- //
@@ -18,10 +19,10 @@ use yaml_rust::Yaml;
 
 // Project imports
 use core::constants::*;
-use core::display;
 use core::utils::read_yaml_file;
 use self::args::parse_arguments;
 use self::config::{Config, parse_config};
+use self::display::{Display, prepare_display};
 use self::workspace::{Workspace, parse_workspace, find_workspace_root};
 
 // ------------------------------------------------------------------------- //
@@ -35,6 +36,8 @@ pub struct Context {
     pub config: Config,
     /// The workspace content.
     pub workspace: Workspace,
+    /// The workspace content.
+    pub display: Display,
     /// The command line arguments.
     args: ArgMatches<'static>,
     /// The environment variables.
@@ -57,6 +60,7 @@ impl Default for Context {
         Context {
             config: Config::default(),
             workspace: Workspace::default(),
+            display: Display::default(),
             args: ArgMatches::default(),
             env_vars: Default::default(),
             configuration_file: match get_config_home() {
@@ -91,9 +95,11 @@ pub fn build_context() -> Context {
     parse_workspace(&mut ctx);
     // Third parse the different configurations
     parse_config(&mut ctx);
+    // Prepare the display
+    prepare_display(&mut ctx);
     // Print the resulting context if debug is enabled
     if ctx.config.debug {
-        display::debug(&format!("{:#?}", ctx));
+        ctx.display.clone().debug(&format!("{:#?}", ctx));
     }
     // Return the built context
     ctx

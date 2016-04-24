@@ -9,7 +9,7 @@ use std::env;
 
 // Project imports
 use context::Context;
-use core::errors::{Error, ErrorKind};
+use core::errors::{Error, ErrorKind, Exitable};
 use vcs::Repo;
 
 // ------------------------------------------------------------------------- //
@@ -44,10 +44,11 @@ impl Default for Workspace {
 pub fn parse_workspace(ctx: &mut Context) {
     match ctx.workspace_file_content["repos"].as_hash() {
         None => (),
-        Some(hashmap) =>
+        Some(hashmap) => {
             for repo in hashmap {
-                ctx.workspace.repos.push(Repo::from_hash(repo))
-            },
+                ctx.workspace.repos.push(Repo::from_hash(repo).handle_error())
+            }
+        }
     }
 }
 

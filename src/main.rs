@@ -12,7 +12,8 @@ mod vcs;
 
 /// Run prevy.
 fn main() {
-    // Build the context (arguments, environment variables, config, workspace)
+    // Build the context (arguments, environment variables, config, workspace,
+    // display)
     let ctx = context::build_context();
 
     // Switch to workspace root

@@ -10,7 +10,7 @@ use std::collections::BTreeMap;
 use yaml_rust::Yaml;
 
 // Project imports
-use core::errors::{Error, ErrorKind};
+use core::errors::{Error, ErrorKind, Result};
 
 // ------------------------------------------------------------------------- //
 // Structures                                                                //
@@ -29,16 +29,16 @@ pub struct Repo {
 }
 
 impl Repo {
-    pub fn from_hash(hash: (&Yaml, &Yaml)) -> Repo {
+    pub fn from_hash(hash: (&Yaml, &Yaml)) -> Result<Repo> {
         let mut repo = Repo {
-            path: as_string(hash.0),
+            path: try!(as_string(hash.0)),
             kind: RepoKind::Git,
             remotes: HashMap::default(),
         };
         for (remote, url) in hash.1["remotes"].as_hash().unwrap_or(&BTreeMap::default()) {
-            repo.remotes.insert(as_string(remote), as_string(url));
-        };
-        repo
+            repo.remotes.insert(try!(as_string(remote)), try!(as_string(url)));
+        }
+        Ok(repo)
     }
 }
 
@@ -46,13 +46,15 @@ impl Repo {
 // Internal functions                                                        //
 // ------------------------------------------------------------------------- //
 
-fn as_string(yaml: &Yaml) -> String {
+fn as_string(yaml: &Yaml) -> Result<String> {
     match yaml.as_str() {
-        None => Error {
-            kind: ErrorKind::Parse,
-            message: "Error while parsing a value as string".to_string(),
-            error: Some(format!("{:#?}", yaml)),
-        }.exit(),
-        Some(val) => val.to_string(),
+        None => {
+            Err(Error {
+                kind: ErrorKind::Parse,
+                message: "Error while parsing a value as string".to_string(),
+                error: Some(format!("{:#?}", yaml)),
+            })
+        }
+        Some(val) => Ok(val.to_string()),
     }
 }
