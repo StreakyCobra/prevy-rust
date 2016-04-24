@@ -89,12 +89,13 @@ impl Default for Context {
 /// The context is built out of the command line arguments and the
 /// configurations files. The workspace is also extracted to the context.
 pub fn build_context() -> Context {
-    // First bootstrap the context
+    // First bootstrap the context from command line arguments and environment
+    // variables.
     let mut ctx = bootstrap_context();
-    // Second parse the workspace
-    parse_workspace(&mut ctx);
-    // Third parse the different configurations
+    // Second parse the different configurations
     parse_config(&mut ctx);
+    // Third parse the workspace
+    parse_workspace(&mut ctx);
     // Create a display
     create_display(&mut ctx);
     // Print the resulting context if debug is enabled
@@ -160,7 +161,7 @@ fn bootstrap_context() -> Context {
                              .unwrap()
                              .to_string();
     ctx.workspace_file_content = read_yaml_file(ctx.workspace_file.clone()).unwrap_or_fail();
-    // Return the bootstrapped context that is ready to be parsed
+    // Return the bootstrapped context
     ctx
 }
 
