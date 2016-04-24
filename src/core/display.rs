@@ -4,12 +4,15 @@
 // Imports                                                                   //
 // ------------------------------------------------------------------------- //
 
+// Standard libraries imports
+use std::io::{self, Write};
+use std::process;
+
 // External crates imports
-use ansi_term::Colour::{Red, Blue, Yellow, Purple};
+use ansi_term::Colour::{self, Red, Blue, Yellow, Purple};
 
 // Project imports
 use context::Context;
-use core::utils::{stderr, stdout};
 
 // ------------------------------------------------------------------------- //
 // Structure                                                                 //
@@ -61,10 +64,32 @@ pub fn create_display(ctx: &mut Context) {
     ctx.display = Display { nocolor: ctx.config.nocolor }
 }
 
+/// Print a text to the standard output.
+pub fn stdout(text: &str) {
+    match writeln!(io::stdout(), "{}", text) {
+        Ok(_) => (),
+        // If it goes wrong, exit with a special code as we can't write anything.
+        Err(_) => process::exit(1),
+    }
+}
+
+/// Print a text to the standard error.
+pub fn stderr(text: &str) {
+    match writeln!(io::stderr(), "{}", text) {
+        Ok(_) => (),
+        // If it goes wrong, exit with a special code as we can't write anything.
+        Err(_) => process::exit(1),
+    }
+}
 /// Indent a text with a tabulation.
 ///
 /// Takes care of indenting all lines, not only the first one.
-pub fn indent(text: String) -> String {
-    let prefix = Red.paint(" │ ").to_string();
-    prefix.clone() + &text.replace("\n", &("\n".to_string() + &prefix))
+pub fn boxify(text: String, color: Colour) -> String {
+    let prefix = color.paint("│ ").to_string();
+    let tail = color.paint("\n└ ").to_string();
+    let mut result = String::new();
+    result.push_str(&prefix);
+    result.push_str(&text.replace("\n", &("\n".to_string() + &prefix)));
+    result.push_str(&tail);
+    result
 }

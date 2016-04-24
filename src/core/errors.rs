@@ -1,7 +1,3 @@
-//! This modules handle errors in prevy.
-//!
-//! The display of errorr doesn't use
-
 // ------------------------------------------------------------------------- //
 // Imports                                                                   //
 // ------------------------------------------------------------------------- //
@@ -14,7 +10,7 @@ use std::result::Result as StdResult;
 use ansi_term::Colour::Red;
 
 // Project imports
-use core::utils::stderr;
+use core::display::{boxify, stderr};
 
 // ------------------------------------------------------------------------- //
 // Types                                                                     //
@@ -64,7 +60,7 @@ impl Error {
         stderr(&Red.paint(msg).to_string());
         match self.error.clone() {
             None => (),
-            Some(error) => stderr(&error),
+            Some(error) => stderr(&boxify(error, Red)),
         }
     }
 }

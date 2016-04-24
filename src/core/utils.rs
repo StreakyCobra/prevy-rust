@@ -4,9 +4,7 @@
 
 // Standard libraries imports
 use std::fs::File;
-use std::io;
 use std::io::prelude::*;
-use std::process;
 
 // External crates imports
 use yaml_rust::{Yaml, YamlLoader};
@@ -59,23 +57,5 @@ pub fn read_yaml_file(filename: String) -> Result<Yaml> {
                 Ok(Yaml::Null)
             }
         }
-    }
-}
-
-/// Print a text to the standard output.
-pub fn stdout(text: &str) {
-    match writeln!(io::stdout(), "{}", text) {
-        Ok(_) => (),
-        // If it goes wrong, exit with a special code as we can't write anything.
-        Err(_) => process::exit(1),
-    }
-}
-
-/// Print a text to the standard error.
-pub fn stderr(text: &str) {
-    match writeln!(io::stderr(), "{}", text) {
-        Ok(_) => (),
-        // If it goes wrong, exit with a special code as we can't write anything.
-        Err(_) => process::exit(1),
     }
 }
