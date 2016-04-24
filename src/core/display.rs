@@ -17,12 +17,12 @@ use core::errors::{Error, ErrorKind};
 // Public API                                                                //
 // ------------------------------------------------------------------------- //
 
-/// Print an error message.
+/// Print a message.
 pub fn print(text: &str) {
     stderr(text);
 }
 
-/// Print an error message.
+/// Print a debug message.
 pub fn debug(text: &str) {
     stderr(&Blue.paint(text).to_string());
 }
@@ -37,7 +37,7 @@ pub fn info(text: &str) {
     stdout(&Purple.paint(text).to_string());
 }
 
-/// Print an info message.
+/// Print a warning message.
 pub fn warn(text: &str) {
     stdout(&Yellow.paint(text).to_string());
 }
