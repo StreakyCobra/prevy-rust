@@ -60,8 +60,8 @@ impl Default for Display {
 // Public API                                                                //
 // ------------------------------------------------------------------------- //
 
-pub fn create_display(ctx: &mut Context) {
-    ctx.display = Display { nocolor: ctx.config.nocolor }
+pub fn create_display(ctx: &mut Context) -> Display {
+    Display { nocolor: ctx.config.nocolor }
 }
 
 /// Print a text to the standard output.

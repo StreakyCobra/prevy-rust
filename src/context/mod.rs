@@ -97,7 +97,7 @@ pub fn build_context() -> Context {
     // Third parse the workspace
     parse_workspace(&mut ctx);
     // Create a display
-    create_display(&mut ctx);
+    ctx.display = create_display(&mut ctx);
     // Print the resulting context if debug is enabled
     if ctx.config.debug {
         ctx.display.clone().debug(&format!("{:#?}", ctx));
