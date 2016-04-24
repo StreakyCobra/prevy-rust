@@ -1,3 +1,5 @@
+use yaml_rust::Yaml;
+
 // ------------------------------------------------------------------------- //
 // Structures                                                                //
 // ------------------------------------------------------------------------- //
@@ -11,4 +13,13 @@ pub enum RepoKind {
 pub struct Repo {
     pub path: String,
     pub kind: RepoKind,
+}
+
+impl Repo {
+    pub fn from_hash(hash: (&Yaml, &Yaml)) -> Repo {
+        Repo {
+            path: hash.0.as_str().unwrap().to_string(),
+            kind: RepoKind::Git,
+        }
+    }
 }

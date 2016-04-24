@@ -42,7 +42,13 @@ impl Default for Workspace {
 // ------------------------------------------------------------------------- //
 
 pub fn parse_workspace(ctx: &mut Context) {
-    // TODO implement
+    match ctx.workspace_file_content["repos"].as_hash() {
+        None => (),
+        Some(hashmap) =>
+            for repo in hashmap {
+                ctx.workspace.repos.push(Repo::from_hash(repo))
+            },
+    }
 }
 
 /// Change directory to the workspace root.
