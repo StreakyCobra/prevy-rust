@@ -11,12 +11,6 @@ mod context;
 mod core;
 mod vcs;
 
-use threadpool::ThreadPool;
-use std::sync::mpsc::channel;
-
-use vcs::Vcs;
-use vcs::git::Git;
-
 /// Run prevy.
 fn main() {
     // Build the context:
@@ -29,20 +23,4 @@ fn main() {
 
     // Switch to workspace root
     ctx.workspace.cd_root();
-
-    let pool = ThreadPool::new(1);
-    let (tx, rx) = channel();
-
-    for repo in ctx.workspace.repos.clone() {
-        println!("{:?}", repo);
-        let tx = tx.clone();
-        pool.execute(move || {
-            Git::clone_repo(&repo);
-            tx.send(0).unwrap();
-        });
-    }
-
-    for val in rx.iter().take(ctx.workspace.repos.len()) {
-        println!("{:?}", val);
-    }
 }
