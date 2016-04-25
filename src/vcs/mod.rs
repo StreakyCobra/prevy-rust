@@ -1,3 +1,5 @@
+pub mod git;
+
 // ------------------------------------------------------------------------- //
 // Imports                                                                   //
 // ------------------------------------------------------------------------- //
@@ -24,6 +26,7 @@ pub enum RepoKind {
 #[derive(Clone, Debug)]
 pub struct Repo {
     pub path: String,
+    pub url: String,
     pub kind: RepoKind,
     pub remotes: HashMap<String, String>,
 }
@@ -32,6 +35,7 @@ impl Repo {
     pub fn from_hash(hash: (&Yaml, &Yaml)) -> Result<Repo> {
         let mut repo = Repo {
             path: try!(as_string(hash.0)),
+            url: hash.1["url"].as_str().unwrap().to_string(),
             kind: RepoKind::Git,
             remotes: HashMap::default(),
         };
@@ -40,6 +44,14 @@ impl Repo {
         }
         Ok(repo)
     }
+}
+
+// ------------------------------------------------------------------------- //
+// Traits                                                                    //
+// ------------------------------------------------------------------------- //
+
+pub trait Vcs {
+    fn clone_repo(repo: &Repo);
 }
 
 // ------------------------------------------------------------------------- //

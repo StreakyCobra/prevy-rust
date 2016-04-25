@@ -10,6 +10,9 @@ mod context;
 mod core;
 mod vcs;
 
+use vcs::Vcs;
+use vcs::git::Git;
+
 /// Run prevy.
 fn main() {
     // Build the context:
@@ -22,4 +25,8 @@ fn main() {
 
     // Switch to workspace root
     ctx.workspace.cd_root();
+
+    for repo in ctx.workspace.repos {
+       Git::clone_repo(&repo);
+    }
 }
