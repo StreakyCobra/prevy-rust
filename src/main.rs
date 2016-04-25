@@ -2,6 +2,7 @@
 extern crate ansi_term;
 extern crate atty;
 extern crate clap;
+extern crate threadpool;
 extern crate xdg_basedir;
 extern crate yaml_rust;
 
@@ -9,6 +10,9 @@ extern crate yaml_rust;
 mod context;
 mod core;
 mod vcs;
+
+use threadpool::ThreadPool;
+use std::sync::mpsc::channel;
 
 use vcs::Vcs;
 use vcs::git::Git;
@@ -26,7 +30,19 @@ fn main() {
     // Switch to workspace root
     ctx.workspace.cd_root();
 
-    for repo in ctx.workspace.repos {
-       Git::clone_repo(&repo);
+    let pool = ThreadPool::new(1);
+    let (tx, rx) = channel();
+
+    for repo in ctx.workspace.repos.clone() {
+        println!("{:?}", repo);
+        let tx = tx.clone();
+        pool.execute(move || {
+            Git::clone_repo(&repo);
+            tx.send(0).unwrap();
+        });
+    }
+
+    for val in rx.iter().take(ctx.workspace.repos.len()) {
+        println!("{:?}", val);
     }
 }

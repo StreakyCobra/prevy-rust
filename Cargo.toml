@@ -7,5 +7,6 @@ authors = ["Fabien Dubosson <fabien.dubosson@gmail.com>"]
 ansi_term = "0.7"
 atty = "0.1"
 clap = "2"
+threadpool = "1"
 xdg-basedir = "1"
 yaml-rust = "*"
