@@ -10,6 +10,7 @@ use std::env;
 // Project imports
 use context::Context;
 use core::errors::{Error, ErrorKind, Fallible, Result};
+use core::utils::current_dir;
 use vcs::Repo;
 
 // ------------------------------------------------------------------------- //
@@ -102,25 +103,6 @@ pub fn find_workspace_root(filename: String) -> Result<String> {
 // ------------------------------------------------------------------------- //
 // Internal functions                                                        //
 // ------------------------------------------------------------------------- //
-
-/// Return the path to the current directory as a `String`.
-///
-/// # Errors
-///
-/// If the current directory can not be retrived, return an `Error` of kind
-/// `IO`.
-fn current_dir() -> Result<String> {
-    match env::current_dir() {
-        Ok(pathbuf) => Ok(pathbuf.to_str().unwrap().to_string()),
-        Err(error) => {
-            Err(Error {
-                kind: ErrorKind::IO,
-                message: "Can not get the currend directory path".to_string(),
-                error: Some(error.to_string()),
-            })
-        }
-    }
-}
 
 /// Check if the given path is the root of a workspace.
 fn is_workspace_root(path: &str, workspace_filename: String) -> bool {

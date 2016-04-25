@@ -3,6 +3,7 @@
 // ------------------------------------------------------------------------- //
 
 // Standard libraries imports
+use std::env;
 use std::fs::File;
 use std::io::prelude::*;
 
@@ -56,6 +57,25 @@ pub fn read_yaml_file(filename: String) -> Result<Yaml> {
             } else {
                 Ok(Yaml::Null)
             }
+        }
+    }
+}
+
+/// Return the path to the current directory as a `String`.
+///
+/// # Errors
+///
+/// If the current directory can not be retrived, return an `Error` of kind
+/// `IO`.
+pub fn current_dir() -> Result<String> {
+    match env::current_dir() {
+        Ok(pathbuf) => Ok(pathbuf.to_str().unwrap().to_string()),
+        Err(error) => {
+            Err(Error {
+                kind: ErrorKind::IO,
+                message: "Can not get the currend directory path".to_string(),
+                error: Some(error.to_string()),
+            })
         }
     }
 }
