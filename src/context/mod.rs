@@ -1,3 +1,4 @@
+// Modules
 mod args;
 mod config;
 mod workspace;
@@ -36,7 +37,7 @@ pub struct Context {
     pub config: Config,
     /// The workspace content.
     pub workspace: Workspace,
-    /// The workspace content.
+    /// The display to use.
     pub display: Display,
     /// The command line arguments.
     args: ArgMatches<'static>,
@@ -121,7 +122,7 @@ fn bootstrap_context() -> Context {
     // Parse command line arguments
     ctx.args = parse_arguments();
     // Get environment variables
-    ctx.env_vars = env::vars().filter_map(|s| parse_prevy_var(s)).collect();
+    ctx.env_vars = env::vars().filter_map(|s| read_prevy_var(s)).collect();
     // Set the configuration file to use. Can only be overidden by a command
     // line argument or an environment variable.
     match ctx.env_vars.get(ID_CONFIGURATION_FILE) {
@@ -166,7 +167,7 @@ fn bootstrap_context() -> Context {
 }
 
 /// Parse an environment variables.
-fn parse_prevy_var(val: (String, String)) -> Option<(String, String)> {
+fn read_prevy_var(val: (String, String)) -> Option<(String, String)> {
     if val.0.starts_with(VAR_PREFIX) {
         Some((var_to_id(val.0), val.1))
     } else {
