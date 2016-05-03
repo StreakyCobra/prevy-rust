@@ -16,9 +16,8 @@ fn main() {
     // Build the context:
     // - Handle command line arguments
     // - Handle environment variables
-    // - Parse the configuration
-    // - Parse the workspace
-    // - Prepare a display
+    // - Parse the configuration file
+    // - Parse the workspace file
     let ctx = context::build_context();
 
     // Switch to workspace root
