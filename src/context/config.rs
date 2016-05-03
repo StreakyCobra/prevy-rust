@@ -109,7 +109,7 @@ fn parse_config_file(ctx: &mut Context) {
 
 /// Parse the workspace file.
 fn parse_workspace_file(ctx: &mut Context) {
-    let yaml = ctx.workspace_file_content["config"].clone();
+    let yaml = ctx.workspace_file_content[SEC_WORKSPACE_CONFIG].clone();
     parse_yaml_config(ctx, yaml);
 }
 

@@ -7,6 +7,9 @@ pub const DEFAULT_WORKSPACE_FILENAME: &'static str = ".prevy.yaml";
 /// The prefix of prevy environment variables.
 pub const VAR_PREFIX: &'static str = "PREVY_";
 
+/// The section containing the configuration in the workspace file.
+pub const SEC_WORKSPACE_CONFIG: &'static str = "config";
+
 /// Identifier for the configuration filename.
 pub const ID_CONFIGURATION_FILE: &'static str = "configuration_file";
 
