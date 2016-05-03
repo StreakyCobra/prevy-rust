@@ -55,6 +55,6 @@ pub fn parse_arguments() -> ArgMatches<'static> {
         true => args.setting(AppSettings::ColoredHelp),
     };
 
-    // Do the parsing and return the parsed argumentsg
+    // Do the parsing and return the parsed arguments
     args.get_matches()
 }
