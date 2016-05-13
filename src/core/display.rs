@@ -81,6 +81,7 @@ pub fn stderr(text: &str) {
         Err(_) => process::exit(1),
     }
 }
+
 /// Indent a text with a tabulation.
 ///
 /// Takes care of indenting all lines, not only the first one.

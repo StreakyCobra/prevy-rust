@@ -9,6 +9,7 @@ use std::env;
 
 // Project imports
 use context::Context;
+use core::constants::*;
 use core::errors::{Error, ErrorKind, Fallible, Result};
 use core::utils::current_dir;
 use vcs::Repo;
@@ -43,7 +44,7 @@ impl Default for Workspace {
 // ------------------------------------------------------------------------- //
 
 pub fn parse_workspace(ctx: &mut Context) {
-    match ctx.workspace_file_content["repos"].as_hash() {
+    match ctx.workspace_file_content[SEC_WORKSPACE_REPOS].as_hash() {
         None => (),
         Some(hashmap) => {
             for repo in hashmap {

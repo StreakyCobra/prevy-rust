@@ -10,6 +10,12 @@ pub const VAR_PREFIX: &'static str = "PREVY_";
 /// The section containing the configuration in the workspace file.
 pub const SEC_WORKSPACE_CONFIG: &'static str = "config";
 
+/// The section containing the repositories in the workspace file.
+pub const SEC_WORKSPACE_REPOS: &'static str = "repos";
+
+/// The section containing the repositories' remotes in the workspace file.
+pub const SEC_WORKSPACE_REMOTES: &'static str = "remotes";
+
 /// Identifier for the configuration filename.
 pub const ID_CONFIGURATION_FILE: &'static str = "configuration_file";
 

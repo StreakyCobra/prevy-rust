@@ -12,6 +12,7 @@ use std::collections::BTreeMap;
 use yaml_rust::Yaml;
 
 // Project imports
+use core::constants::*;
 use core::errors::{Error, ErrorKind, Result};
 
 // ------------------------------------------------------------------------- //
@@ -39,7 +40,7 @@ impl Repo {
             kind: RepoKind::Git,
             remotes: HashMap::default(),
         };
-        for (remote, url) in hash.1["remotes"].as_hash().unwrap_or(&BTreeMap::default()) {
+        for (remote, url) in hash.1[SEC_WORKSPACE_REMOTES].as_hash().unwrap_or(&BTreeMap::default()) {
             repo.remotes.insert(try!(as_string(remote)), try!(as_string(url)));
         }
         Ok(repo)
