@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 use std::env::set_current_dir;
-use std::path::{Path};
+use std::path::Path;
 use std::process::Command;
 
 use core::errors::{Error, ErrorKind, Fallible, Result};
@@ -8,14 +8,16 @@ use core::utils::current_dir;
 use vcs::{Repo, RepoInfo};
 
 #[derive(Clone, Debug)]
-pub struct Git{
+pub struct Git {
     pub path: String,
     pub url: String,
     pub remotes: HashMap<String, String>,
 }
 
 impl Repo for Git {
-    fn from_info(repo_info: RepoInfo) -> Self where Self: Sized {
+    fn from_info(repo_info: RepoInfo) -> Self
+        where Self: Sized
+    {
         Git {
             path: repo_info.path,
             url: repo_info.url,

@@ -36,7 +36,9 @@ pub trait RepoClone {
     fn clone_box(&self) -> Box<Repo>;
 }
 
-impl<T> RepoClone for T where T: 'static + Repo + Clone {
+impl<T> RepoClone for T
+    where T: 'static + Repo + Clone
+{
     fn clone_box(&self) -> Box<Repo> {
         Box::new(self.clone())
     }
