@@ -9,11 +9,11 @@ use vcs::Repo;
 
 
 impl Cmd for Update {
-    fn run(repos: &[Repo]) -> Box<Fn() -> ()> {
+    fn run(repos: Vec<Box<Repo>>) -> Box<Fn() -> ()> {
         let pool = ThreadPool::new(1);
         let (tx, rx) = channel();
 
-        for repo in repos {
+        for repo in repos.clone() {
             println!("{:?}", repo);
             let tx = tx.clone();
             pool.execute(move || {

@@ -3,5 +3,5 @@ pub mod update;
 use vcs::Repo;
 
 trait Cmd {
-    fn run(repos: &[Repo]) -> Box<Fn() -> ()>;
+    fn run(repos: Vec<Box<Repo>>) -> Box<Fn() -> ()>;
 }
