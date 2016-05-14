@@ -4,17 +4,22 @@ use std::process::Command;
 
 use core::errors::{Error, ErrorKind, Fallible, Result};
 use core::utils::current_dir;
-use vcs::{Repo, Vcs};
+use vcs::{Repo, RepoInfo};
 
 #[derive(Clone, Debug)]
-pub struct Git;
+pub struct Git(RepoInfo);
 
-impl Vcs for Git {
-    fn clone_repo(repo: &Repo) {
+impl Repo for Git {
+    fn from_info(repo_info: RepoInfo) -> Self where Self: Sized {
+        Git(repo_info)
+    }
+
+    fn clone_repo(self) {
         // Store current location
+        let Git(info) = self;
         let current_dir_string = current_dir().unwrap_or_fail();
         let current_dir = Path::new(&current_dir_string).to_path_buf();
-        let repo_dir = current_dir.join(repo.path.clone());
+        let repo_dir = current_dir.join(info.path.clone());
         let repo_name = repo_dir.file_name().unwrap();
         let parent_dir = repo_dir.parent().unwrap();
 
@@ -29,7 +34,7 @@ impl Vcs for Git {
 
         let output = Command::new("git")
                          .arg("clone")
-                         .arg(&repo.url)
+                         .arg(info.url)
                          .arg(repo_name)
                          .current_dir(parent_dir)
                          .output()

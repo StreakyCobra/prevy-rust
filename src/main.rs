@@ -7,7 +7,7 @@ extern crate xdg_basedir;
 extern crate yaml_rust;
 
 // Project modules
-mod commands;
+// mod commands;
 mod context;
 mod core;
 mod vcs;

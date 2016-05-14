@@ -12,7 +12,7 @@ use context::Context;
 use core::constants::*;
 use core::errors::{Error, ErrorKind, Fallible, Result};
 use core::utils::current_dir;
-use vcs::Repo;
+use vcs::{self, Repo};
 
 // ------------------------------------------------------------------------- //
 // Structures                                                                //
@@ -21,7 +21,7 @@ use vcs::Repo;
 #[derive(Clone, Debug)]
 pub struct Workspace {
     pub root: String,
-    pub repos: Vec<Repo>,
+    pub repos: Vec<Box<Repo>>,
 }
 
 impl Workspace {
@@ -48,7 +48,7 @@ pub fn parse_workspace(ctx: &mut Context) {
         None => (),
         Some(hashmap) => {
             for repo in hashmap {
-                ctx.workspace.repos.push(Repo::from_hash(repo).unwrap_or_fail())
+                ctx.workspace.repos.push(vcs::from_hash(repo).unwrap_or_fail())
             }
         }
     }
