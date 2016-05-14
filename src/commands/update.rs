@@ -1,5 +1,3 @@
-pub struct Update;
-
 use std::sync::mpsc::channel;
 
 use threadpool::ThreadPool;
@@ -7,6 +5,7 @@ use threadpool::ThreadPool;
 use commands::Cmd;
 use vcs::Repo;
 
+pub struct Update;
 
 impl Cmd for Update {
     fn run(repos: Vec<Box<Repo>>) -> Box<Fn() -> ()> {

@@ -1,9 +1,8 @@
 use std::collections::HashMap;
-use std::env::set_current_dir;
 use std::path::Path;
 use std::process::Command;
 
-use core::errors::{Error, ErrorKind, Fallible, Result};
+use core::errors::Fallible;
 use core::utils::current_dir;
 use vcs::{Repo, RepoInfo};
 
