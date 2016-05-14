@@ -44,12 +44,15 @@ impl<T> RepoClone for T where T: 'static + Repo + Clone {
 
 pub trait Repo: RepoClone {
     fn from_info(RepoInfo) -> Self where Self: Sized;
-    fn clone_repo(self);
+    fn clone_repo(&self);
+    fn kind(&self) -> String;
+    fn path(&self) -> String;
+    fn remotes(&self) -> HashMap<String, String>;
 }
 
 impl fmt::Debug for Repo {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "Hi: {}", "Test")
+        write!(f, "{}: {}\n{:?}", self.kind(), self.path(), self.remotes())
     }
 }
 
