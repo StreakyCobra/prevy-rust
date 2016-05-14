@@ -6,22 +6,13 @@ use core::errors::Fallible;
 use core::utils::current_dir;
 use vcs::{Repo, RepoInfo};
 
-#[derive(Clone, Debug)]
-pub struct Git {
-    pub path: String,
-    pub url: String,
-    pub remotes: HashMap<String, String>,
-}
+new_repo_type!(Git);
 
 impl Repo for Git {
     fn from_info(repo_info: RepoInfo) -> Self
         where Self: Sized
     {
-        Git {
-            path: repo_info.path,
-            url: repo_info.url,
-            remotes: repo_info.remotes,
-        }
+        Git(repo_info)
     }
 
     fn clone_repo(&self) {

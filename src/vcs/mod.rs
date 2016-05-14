@@ -1,3 +1,29 @@
+// ------------------------------------------------------------------------- //
+// Macros                                                                    //
+// ------------------------------------------------------------------------- //
+
+macro_rules! new_repo_type {
+    ($new:ident) => (
+        use std::ops::{Deref, DerefMut};
+
+        #[derive(Clone, Debug)]
+        pub struct $new(RepoInfo);
+
+        impl Deref for $new {
+            type Target = RepoInfo;
+            fn deref(&self) -> &RepoInfo { &self.0 }
+        }
+
+        impl DerefMut for $new {
+            fn deref_mut(&mut self) -> &mut RepoInfo { &mut self.0 }
+        }
+    )
+}
+
+// ------------------------------------------------------------------------- //
+// Modules                                                                   //
+// ------------------------------------------------------------------------- //
+
 pub mod git;
 
 // ------------------------------------------------------------------------- //
