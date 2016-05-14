@@ -5,7 +5,6 @@ pub mod git;
 // ------------------------------------------------------------------------- //
 
 // Standard libraries imports
-use std::clone;
 use std::collections::HashMap;
 use std::collections::BTreeMap;
 use std::fmt;
