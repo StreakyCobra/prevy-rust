@@ -8,22 +8,18 @@ use vcs::Repo;
 pub struct Update;
 
 impl Cmd for Update {
-    fn run(repos: Vec<Box<Repo>>) -> Box<Fn() -> ()> {
+    fn run(repos: Vec<Box<Repo + Send>>) -> Box<Fn() -> ()> {
         let pool = ThreadPool::new(1);
         let (tx, rx) = channel();
 
-        for repo in repos.clone() {
-            println!("{:?}", repo);
+        for repo in repos {
             let tx = tx.clone();
             pool.execute(move || {
-                // repo.kind.clone_repo(&repo);
+                repo.clone_repo();
                 tx.send(0).unwrap();
             });
         }
 
-        for val in rx.iter().take(repos.len()) {
-            println!("{:?}", val);
-        }
         Box::new(move || println!("{}", "Hello"))
     }
 }
