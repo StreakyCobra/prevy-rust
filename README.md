@@ -20,6 +20,8 @@ _**» Manage your development workspaces with ease.**_
 
 # Presentation
 
+[![Join the chat at https://gitter.im/prevy/prevy](https://badges.gitter.im/prevy/prevy.svg)](https://gitter.im/prevy/prevy?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 `prevy` helps you to manage your development workspaces by displaying status and
 acting on all the projects you are working on.
 
